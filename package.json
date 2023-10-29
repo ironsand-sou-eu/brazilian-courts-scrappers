@@ -1,0 +1,40 @@
+{
+  "name": "brazilian-courts-scrappers",
+  "version": "1.0.0",
+  "description": "Data scrapper para fazer raspagem de dados de processos judiciais dos portais de tribunais do Brasil.",
+  "main": "./dist/index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "webpack",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ironsand-sou-eu/brazilian-courts-scrappers.git"
+  },
+  "keywords": [
+    "brazilian",
+    "courts",
+    "scrapper",
+    "tribunal",
+    "tribunais",
+    "Brasil",
+    "automação",
+    "advogados"
+  ],
+  "author": "César Rodríguez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ironsand-sou-eu/brazilian-courts-scrappers/issues"
+  },
+  "homepage": "https://github.com/ironsand-sou-eu/brazilian-courts-scrappers#readme",
+  "devDependencies": {
+    "prettier": "^3.0.3",
+    "ts-loader": "^9.5.0",
+    "typescript": "^5.2.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
