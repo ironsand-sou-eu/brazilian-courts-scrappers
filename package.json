@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Data scrapper para fazer raspagem de dados de processos judiciais dos portais de tribunais do Brasil.",
   "main": "./dist/index.js",
+  "type": "module",
   "directories": {
     "test": "tests"
   },

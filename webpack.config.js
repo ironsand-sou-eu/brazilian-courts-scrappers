@@ -1,24 +1,31 @@
 import path from "path";
+import { fileURLToPath } from "url";
 
-export const cache = false;
-export const mode = "production";
-export const entry = "./src/index.ts";
-export const output = {
-  filename: "bundle.js",
-  path: path.resolve(__dirname, "dist"),
-};
-export const resolve = {
-  extensions: [".js", ".ts"],
-};
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export const module = {
-  rules: [
-    {
-      test: /\.[jt]s$/,
-      include: [path.resolve(__dirname, "src")],
-      use: {
-        loader: "ts-loader",
+const config = {
+  cache: false,
+  mode: "production",
+  entry: "./src/index.ts",
+  output: {
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
+  },
+  resolve: {
+    extensions: [".js", ".ts"],
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.[jt]s$/,
+        include: [path.resolve(__dirname, "src")],
+        use: {
+          loader: "ts-loader",
+        },
       },
-    },
-  ],
+    ],
+  },
 };
+
+export default config;
