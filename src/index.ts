@@ -68,5 +68,3 @@ export default function identifyCorrectScrapper(doc: Document) {
 //     return found[0].hostname;
 //   }
 // }
-
-module.exports = { identifyCorrectScrapper }; //, pjeLoadFullTimeline };
