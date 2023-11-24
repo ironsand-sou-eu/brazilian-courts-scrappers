@@ -8,58 +8,60 @@ import ProcessoScrapper from "./ProcessoScrapper";
 import ProjudiTjbaAndamentosScrapper from "./ProjudiTjbaAndamentosScrapper";
 import ProjudiTjbaPartesScrapper from "./ProjudiTjbaPartesScrapper";
 import { PartesReturn } from "./PartesScrapper";
+import {
+  getElementFollowingCellSearchedByTextContent,
+  getValueFollowingCellSearchedByTextContent,
+} from "../utils";
 
 type JuizoInfo = { juizo?: ScrappedUnidadeJurisdicional; nomeJuiz?: string };
 
 export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
-  private static PROCESSO_HOME_PATH_PART =
+  protected static PROCESSO_HOME_PATH_PART =
     "/projudi/listagens/DadosProcesso?numeroProcesso=";
-  private static IGNORE_URLS_CONTAINING = [
+  protected static IGNORE_URLS_CONTAINING = [
     "https://projudi.tjba.jus.br/projudi/scripts/subModal/carregando.html",
     "https://projudi.tjba.jus.br/projudi/Cabecalho.jsp",
     "https://projudi.tjba.jus.br/projudi/advogado/CentroAdvogado",
     "https://projudi.tjba.jus.br/projudi/",
   ];
-  private static PROJUDI_EXTENDED_DATE_REGEX =
+  protected static PROJUDI_EXTENDED_DATE_REGEX =
     /\d{1,2} de [a-zç]+ de (\d{2}|\d{4}) às \d{1,2}:\d{1,2}/gi;
-  private static divPartes: HTMLElement;
-  private static divPartesTbody: HTMLElement;
+  protected divPartes: HTMLElement;
+  protected divPartesTbody: HTMLElement;
 
-  public static async fetchProcessoInfo(
-    doc: Document
-  ): Promise<ScrappedProcesso> {
-    try {
-      this.loadPageCheckpoints(doc);
-      return await this.ScrappeProcessoInfo(doc);
-    } catch (e) {
-      if (!(e instanceof NotProcessoHomepageException)) console.error(e);
-    }
+  constructor(protected doc: Document) {
+    super(doc);
   }
 
-  public static checkProcessoHomepage(url: string): boolean {
+  public async fetchProcessoInfo(): Promise<ScrappedProcesso> {
+    return super.fetchProcessoInfo();
+  }
+
+  public checkProcessoHomepage(url: string): boolean {
     if (
-      this.IGNORE_URLS_CONTAINING.some(itemToIgnore =>
+      ProjudiTjbaProcessoScrapper.IGNORE_URLS_CONTAINING.some(itemToIgnore =>
         url.includes(itemToIgnore)
       )
     ) {
       return false;
-    } else if (!url || !url.includes(this.PROCESSO_HOME_PATH_PART)) {
+    } else if (
+      !url ||
+      !url.includes(ProjudiTjbaProcessoScrapper.PROCESSO_HOME_PATH_PART)
+    ) {
       throw new NotProcessoHomepageException(new URL(url));
     } else {
       return true;
     }
   }
 
-  private static loadPageCheckpoints(doc: Document): void {
-    this.divPartes = doc.querySelector("#Partes")!;
+  protected loadPageCheckpoints(): void {
+    this.divPartes = this.doc.querySelector("#Partes")!;
     this.divPartesTbody = this.divPartes.querySelector("table > tbody")!;
   }
 
-  private static async ScrappeProcessoInfo(
-    doc: Document
-  ): Promise<ScrappedProcesso> {
-    const andamentos = (await this.getAndamentos(doc)) ?? [];
-    const { poloAtivo, poloPassivo, outros } = this.getPartes(doc);
+  protected async scrappeProcessoInfo(): Promise<ScrappedProcesso> {
+    const andamentos = (await this.getAndamentos()) ?? [];
+    const { poloAtivo, poloPassivo, outros } = this.getPartes();
     const { juizo, nomeJuiz } = this.getJuizoInfo();
     const processoInfo = new ScrappedProcesso(
       this.getNumero(),
@@ -86,41 +88,40 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     return processoInfo;
   }
 
-  private static getNumero(): string | undefined {
+  protected getNumero(): string | undefined {
     const linkNumeroProcesso = this.divPartes.querySelector(
-      `a[href*="${this.PROCESSO_HOME_PATH_PART}"]`
+      `a[href*="${ProjudiTjbaProcessoScrapper.PROCESSO_HOME_PATH_PART}"]`
     );
     return linkNumeroProcesso?.textContent;
     // TODO: Validar número CNJ com RegEx ou lançar exceção
   }
 
-  private static getNumeroRegional(): null {
+  protected getNumeroRegional(): null {
     return null;
   }
 
-  private static getUrl(): URL {
+  protected getUrl(): URL {
     const linkNumeroProcesso = this.divPartes.querySelector<HTMLAnchorElement>(
-      `a[href*="${this.PROCESSO_HOME_PATH_PART}"]`
+      `a[href*="${ProjudiTjbaProcessoScrapper.PROCESSO_HOME_PATH_PART}"]`
     );
     return new URL(linkNumeroProcesso!.href);
   }
 
-  private static getDataDistribuicao(): Date | null {
+  protected getDataDistribuicao(): Date | null {
     const params = {
       parentElement: this.divPartesTbody,
       firstGuessQuerySelector: "tr:nth-child(14) > td:nth-child(3)",
       IterableElementsQuerySelector: "tr td",
       partialTextToSearch: "data de distribuição",
     };
-    const projudiDateString = super.getValueFollowingCellSearchedByTextContent(
-      params
-    );
+    const projudiDateString =
+      getValueFollowingCellSearchedByTextContent(params);
     return projudiDateString
       ? this.getDateFromProjudiTjbaDateString(projudiDateString)
       : null;
   }
 
-  private static getDateFromProjudiTjbaDateString(dateStr: string): Date {
+  protected getDateFromProjudiTjbaDateString(dateStr: string): Date {
     const timeDiffFromGmt = "-03:00";
     const dateStrWithoutPrepositions = dateStr
       .trim()
@@ -156,7 +157,7 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     );
   }
 
-  private static getValorDaCausa(): number {
+  protected getValorDaCausa(): number {
     const params = {
       parentElement: this.divPartesTbody,
       firstGuessQuerySelector: "tr:nth-child(15) > td:first-child",
@@ -164,7 +165,7 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
       partialTextToSearch: "valor da causa",
     };
     const projudiValorDaCausaString =
-      super.getValueFollowingCellSearchedByTextContent(params);
+      getValueFollowingCellSearchedByTextContent(params);
 
     let valorDaCausa =
       projudiValorDaCausaString ?? "".trim().replace(/(R\$ )|(\.)/g, "");
@@ -172,7 +173,7 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     return Number(valorDaCausa);
   }
 
-  private static getTipoDeAcao(): SimpleType[] {
+  protected getTipoDeAcao(): SimpleType[] {
     const params = {
       parentElement: this.divPartesTbody,
       firstGuessQuerySelector: "tr:nth-child(10) > td:first-child",
@@ -180,7 +181,7 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
       partialTextToSearch: "classe",
     };
     const projudiTipoDeAcaoString =
-      super.getValueFollowingCellSearchedByTextContent(params);
+      getValueFollowingCellSearchedByTextContent(params);
     if (!projudiTipoDeAcaoString) return [];
     const tipoDeAcaoStringArray = projudiTipoDeAcaoString
       .split(" « ")
@@ -190,7 +191,7 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     });
   }
 
-  private static getCausaDePedir(): SimpleType[] {
+  protected getCausaDePedir(): SimpleType[] {
     const params = {
       parentElement: this.divPartesTbody,
       firstGuessQuerySelector: "tr:nth-child(8) > td:first-child",
@@ -198,7 +199,7 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
       partialTextToSearch: "assunto",
     };
     const projudiCausaDePedirString =
-      super.getValueFollowingCellSearchedByTextContent(params);
+      getValueFollowingCellSearchedByTextContent(params);
     const causaDePedirStringArray = !projudiCausaDePedirString
       ? []
       : projudiCausaDePedirString.split(" « ").reverse();
@@ -207,7 +208,7 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     });
   }
 
-  private static getSegredoJustica(): boolean {
+  protected getSegredoJustica(): boolean {
     const params = {
       parentElement: this.divPartesTbody,
       firstGuessQuerySelector: "tr:nth-child(11) > td:first-child",
@@ -215,11 +216,11 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
       partialTextToSearch: "segredo de justiça",
     };
     const projudiSegredoJusticaString =
-      super.getValueFollowingCellSearchedByTextContent(params);
+      getValueFollowingCellSearchedByTextContent(params);
     return projudiSegredoJusticaString === "SIM";
   }
 
-  private static getJuizoInfo(): JuizoInfo {
+  protected getJuizoInfo(): JuizoInfo {
     const JuizoJuiz = this.getJuizoJuizString()?.split(" Juiz: ");
     if (!JuizoJuiz) return { juizo: undefined, nomeJuiz: undefined };
     const juizo = new ScrappedUnidadeJurisdicional(JuizoJuiz[0]);
@@ -227,37 +228,36 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     return { juizo, nomeJuiz };
   }
 
-  private static getJuizoJuizString(): string | null {
+  protected getJuizoJuizString(): string | null {
     const params = {
       parentElement: this.divPartesTbody,
       firstGuessQuerySelector: "tr:nth-child(7) > td:first-child",
       IterableElementsQuerySelector: "tr td",
       partialTextToSearch: "juízo",
     };
-    return super.getValueFollowingCellSearchedByTextContent(params);
+    return getValueFollowingCellSearchedByTextContent(params);
   }
 
-  private static getNumeroProcessoPrincipal(): string | null {
+  protected getNumeroProcessoPrincipal(): string | null {
     const params = {
       parentElement: this.divPartesTbody,
       firstGuessQuerySelector: "tr:nth-child(6) > td:first-child",
       IterableElementsQuerySelector: "tr td",
       partialTextToSearch: "proc. principal",
     };
-    const processoPrincipal = super.getValueFollowingCellSearchedByTextContent(
-      params
-    );
+    const processoPrincipal =
+      getValueFollowingCellSearchedByTextContent(params);
     return processoPrincipal &&
       !processoPrincipal.toLowerCase().includes("o próprio")
       ? processoPrincipal
       : null;
   }
 
-  private static getNumerosIncidentes(): string[] {
+  protected getNumerosIncidentes(): string[] {
     return [];
   }
 
-  private static getNumerosProcessosRelacionados(): string[] {
+  protected getNumerosProcessosRelacionados(): string[] {
     const params = {
       parentElement: this.divPartesTbody,
       firstGuessQuerySelector: "tr:nth-child(6) > td:nth-child(3)",
@@ -266,14 +266,13 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     };
     // TODO: testar processo com mais de um processo dependente. São muitos TD? São múltiplos elementos A
     // na mesma TD?
-    const processosRelacionados = super
-      .getValueFollowingCellSearchedByTextContent(params)
-      ?.trim();
+    const processosRelacionados =
+      getValueFollowingCellSearchedByTextContent(params)?.trim();
     return processosRelacionados ? [processosRelacionados] : [];
   }
 
-  private static getPartes(doc: Document): PartesReturn {
-    const partesScrapper = new ProjudiTjbaPartesScrapper(doc);
+  protected getPartes(): PartesReturn {
+    const partesScrapper = new ProjudiTjbaPartesScrapper(this.doc);
     const partes = partesScrapper.fetchParticipantesInfo();
     if (!partes) {
       return {
@@ -285,23 +284,19 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     return partes;
   }
 
-  private static async getAndamentos(
-    doc: Document
-  ): Promise<ScrappedAndamento[] | undefined> {
-    const scrapper = new ProjudiTjbaAndamentosScrapper(doc);
+  protected async getAndamentos(): Promise<ScrappedAndamento[] | undefined> {
+    const scrapper = new ProjudiTjbaAndamentosScrapper(this.doc);
     return await scrapper.fetchAndamentosInfo();
   }
 
-  private static getPedidos(): string[] {
+  protected getPedidos(): string[] {
     const params = {
       parentElement: this.divPartesTbody,
       firstGuessQuerySelector: "tr:nth-child(9) > td:first-child",
       IterableElementsQuerySelector: "tr td",
       partialTextToSearch: "complementares",
     };
-    const pedidosTd = super.getElementFollowingCellSearchedByTextContent(
-      params
-    );
+    const pedidosTd = getElementFollowingCellSearchedByTextContent(params);
     if (!pedidosTd) return [];
     const pedidos: string[] = [];
     pedidosTd
@@ -312,7 +307,7 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     return pedidos;
   }
 
-  private static getAudienciaFutura(
+  protected getAudienciaFutura(
     andamentos: ScrappedAndamento[]
   ): ScrappedAndamento | null {
     const audienciaRelatedAndamentos =
@@ -322,7 +317,7 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     );
     const audienciaProjudiDateRegexMatch =
       lastRelevantAudiencia?.observacao!.match(
-        this.PROJUDI_EXTENDED_DATE_REGEX
+        ProjudiTjbaProcessoScrapper.PROJUDI_EXTENDED_DATE_REGEX
       );
     if (!audienciaProjudiDateRegexMatch || !lastRelevantAudiencia) return null;
     const audienciaProjudiDateString = audienciaProjudiDateRegexMatch[0];
@@ -333,7 +328,7 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     return audienciaFutura;
   }
 
-  private static filterAudienciaConcerningAndamentos(
+  protected filterAudienciaConcerningAndamentos(
     andamentosArray: ScrappedAndamento[]
   ): ScrappedAndamento[] {
     const audienciaRelatedAndamentos = andamentosArray.filter(
@@ -345,13 +340,13 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     return audienciaRelatedAndamentos;
   }
 
-  private static getLastAudienciaOrNullIfCancelled(
+  protected getLastAudienciaOrNullIfCancelled(
     audienciasUniverse: ScrappedAndamento[]
   ): ScrappedAndamento | null {
     const lastRelevantAudiencia = audienciasUniverse.at(-1);
     if (!lastRelevantAudiencia?.observacao) return null;
     return lastRelevantAudiencia?.observacao.search(
-      this.PROJUDI_EXTENDED_DATE_REGEX
+      ProjudiTjbaProcessoScrapper.PROJUDI_EXTENDED_DATE_REGEX
     ) === -1
       ? null
       : lastRelevantAudiencia;

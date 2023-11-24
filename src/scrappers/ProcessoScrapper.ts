@@ -1,40 +1,20 @@
-type ElementSearcherParams = {
-  parentElement: HTMLElement;
-  firstGuessQuerySelector: string;
-  IterableElementsQuerySelector: string;
-  partialTextToSearch: string;
-};
+import ScrappedProcesso from "../data-structures/ScrappedProcesso";
+import NotProcessoHomepageException from "../exceptions/NotProcessoHomepageException";
 
 export default class ProcessoScrapper {
-  protected static getValueFollowingCellSearchedByTextContent(
-    searcherParams: ElementSearcherParams
-  ): string {
-    return this.getElementFollowingCellSearchedByTextContent(searcherParams)
-      ?.textContent;
+  constructor(protected doc: Document) {}
+
+  public async fetchProcessoInfo(): Promise<ScrappedProcesso> {
+    try {
+      await this.loadPageCheckpoints();
+      return await this.scrappeProcessoInfo();
+    } catch (e) {
+      if (!(e instanceof NotProcessoHomepageException)) console.error(e);
+    }
   }
 
-  protected static getElementFollowingCellSearchedByTextContent({
-    parentElement,
-    firstGuessQuerySelector,
-    IterableElementsQuerySelector,
-    partialTextToSearch,
-  }: ElementSearcherParams): HTMLElement {
-    const firstGuess = parentElement.querySelector(firstGuessQuerySelector);
-    if (
-      firstGuess?.textContent
-        .toLowerCase()
-        .includes(partialTextToSearch.toLowerCase())
-    ) {
-      return firstGuess.nextElementSibling as HTMLElement;
-    }
-
-    const slowChoice = Array.from(
-      parentElement.querySelectorAll(IterableElementsQuerySelector)
-    ).filter(iElement => {
-      return iElement.textContent
-        .toLowerCase()
-        .includes(partialTextToSearch.toLowerCase());
-    });
-    return slowChoice[0]?.nextElementSibling as HTMLElement;
+  protected loadPageCheckpoints(): void {}
+  protected async scrappeProcessoInfo(): Promise<ScrappedProcesso> {
+    return;
   }
 }

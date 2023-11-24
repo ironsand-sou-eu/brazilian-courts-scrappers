@@ -8,54 +8,55 @@ import ProcessoScrapper from "./ProcessoScrapper";
 import Pje1gTjbaAndamentosScrapper from "./Pje1gTjbaAndamentosScrapper";
 import Pje1gTjbaParteScrapper from "./Pje1gTjbaPartesScrapper";
 import { PartesReturn } from "./PartesScrapper";
-import { REGEX_CNJ_NUMBER } from "../utils";
+import {
+  REGEX_CNJ_NUMBER,
+  getValueFollowingCellSearchedByTextContent,
+} from "../utils";
 
 export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
-  private static PROCESSO_HOME_PATH_PART =
+  protected static PROCESSO_HOME_PATH_PART =
     "/pje/Processo/ConsultaProcesso/Detalhe/";
-  private static IGNORE_URLS_CONTAINING = [
+  protected static IGNORE_URLS_CONTAINING = [
     "https://pje.tjba.jus.br/pje/downloadBinario.seam",
   ];
-  private static PJE1G_TJBA_ASSUNTO_OU_CLASSE_ID = /(?<=\()\d*(?=\)$)/g;
-  private static PJE1G_TJBA_ASSUNTO_OU_CLASSE_NOME = /.*(?=\(\d*\)$)/g;
-  private static divMaisDetalhes: HTMLElement;
+  protected static PJE1G_TJBA_ASSUNTO_OU_CLASSE_ID = /(?<=\()\d*(?=\)$)/g;
+  protected static PJE1G_TJBA_ASSUNTO_OU_CLASSE_NOME = /.*(?=\(\d*\)$)/g;
+  protected divMaisDetalhes: HTMLElement;
 
-  public static async fetchProcessoInfo(
-    doc: Document
-  ): Promise<ScrappedProcesso> {
-    try {
-      this.loadPageCheckpoints(doc);
-      return await this.ScrappeProcessoInfo(doc);
-    } catch (e) {
-      if (!(e instanceof NotProcessoHomepageException)) console.error(e);
-    }
+  constructor(protected doc: Document) {
+    super(doc);
   }
 
-  public static checkProcessoHomepage(url: string): boolean {
+  public async fetchProcessoInfo(): Promise<ScrappedProcesso> {
+    return super.fetchProcessoInfo();
+  }
+
+  public checkProcessoHomepage(url: string): boolean {
     if (
-      this.IGNORE_URLS_CONTAINING.some(itemToIgnore =>
+      Pje1gTjbaProcessoScrapper.IGNORE_URLS_CONTAINING.some(itemToIgnore =>
         url.includes(itemToIgnore)
       )
     ) {
       return false;
-    } else if (!url || !url.includes(this.PROCESSO_HOME_PATH_PART)) {
+    } else if (
+      !url ||
+      !url.includes(Pje1gTjbaProcessoScrapper.PROCESSO_HOME_PATH_PART)
+    ) {
       throw new NotProcessoHomepageException(new URL(url));
     } else {
       return true;
     }
   }
 
-  private static loadPageCheckpoints(doc: Document): void {
-    this.divMaisDetalhes = doc.querySelector("#maisDetalhes");
+  protected loadPageCheckpoints(): void {
+    this.divMaisDetalhes = this.doc.querySelector("#maisDetalhes");
   }
 
-  private static async ScrappeProcessoInfo(
-    doc: Document
-  ): Promise<ScrappedProcesso> {
-    const andamentos = await this.getAndamentos(doc);
-    const { poloAtivo, poloPassivo, outros } = this.getPartes(doc);
+  protected async ScrappeProcessoInfo(): Promise<ScrappedProcesso> {
+    const andamentos = await this.getAndamentos();
+    const { poloAtivo, poloPassivo, outros } = this.getPartes();
     return new ScrappedProcesso(
-      this.getNumero(doc),
+      this.getNumero(),
       "pje1gTjba",
       poloAtivo,
       poloPassivo,
@@ -78,33 +79,35 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
     );
   }
 
-  private static getNumero(doc: Document): string {
-    const containerNumeroProcesso = doc.querySelector("a.titulo-topo:has(i)");
+  protected getNumero(): string {
+    const containerNumeroProcesso = this.doc.querySelector(
+      "a.titulo-topo:has(i)"
+    );
     const classAndNumeroProcessoString =
       containerNumeroProcesso.firstChild.textContent.trim();
     return REGEX_CNJ_NUMBER.exec(classAndNumeroProcessoString)[0];
   }
 
-  private static getNumeroRegional(): string {
+  protected getNumeroRegional(): string {
     return null;
   }
 
-  private static getUrl(): URL {
+  protected getUrl(): URL {
     return null;
   }
 
-  private static getDataDistribuicao(): Date {
+  protected getDataDistribuicao(): Date {
     const params = {
       parentElement: this.divMaisDetalhes,
       firstGuessQuerySelector: "dl > dt:nth-child(7)",
       IterableElementsQuerySelector: "dl dt",
       partialTextToSearch: "autuação",
     };
-    const dateString = super.getValueFollowingCellSearchedByTextContent(params);
+    const dateString = getValueFollowingCellSearchedByTextContent(params);
     return this.getDateFromPjeTjbaDateString(dateString);
   }
 
-  public static getDateFromPjeTjbaDateString(
+  public getDateFromPjeTjbaDateString(
     dateStr: string,
     timeStr = "00:00"
   ): Date {
@@ -128,36 +131,34 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
     return new Date(iso8601DateString);
   }
 
-  private static getValorDaCausa(): number {
+  protected getValorDaCausa(): number {
     const params = {
       parentElement: this.divMaisDetalhes,
       firstGuessQuerySelector: "dl > dt:nth-child(11)",
       IterableElementsQuerySelector: "dl dt",
       partialTextToSearch: "valor da causa",
     };
-    const valorDaCausaString = super.getValueFollowingCellSearchedByTextContent(
-      params
-    );
+    const valorDaCausaString =
+      getValueFollowingCellSearchedByTextContent(params);
 
     let valorDaCausa = valorDaCausaString.trim().replace(/(R\$ )|(\.)/g, "");
     return parseFloat(valorDaCausa.replace(",", "."));
   }
 
-  private static getTipoDeAcao(): SimpleType[] {
+  protected getTipoDeAcao(): SimpleType[] {
     const params = {
       parentElement: this.divMaisDetalhes,
       firstGuessQuerySelector: "dl > dt:nth-child(1)",
       IterableElementsQuerySelector: "dl dt",
       partialTextToSearch: "classe judicial",
     };
-    const tipoDeAcaoFullString = super
-      .getValueFollowingCellSearchedByTextContent(params)
-      .trim();
+    const tipoDeAcaoFullString =
+      getValueFollowingCellSearchedByTextContent(params).trim();
     const tipoDeAcaoId = tipoDeAcaoFullString.match(
-      this.PJE1G_TJBA_ASSUNTO_OU_CLASSE_ID
+      Pje1gTjbaProcessoScrapper.PJE1G_TJBA_ASSUNTO_OU_CLASSE_ID
     );
     const tipoDeAcaoNome = tipoDeAcaoFullString.match(
-      this.PJE1G_TJBA_ASSUNTO_OU_CLASSE_NOME
+      Pje1gTjbaProcessoScrapper.PJE1G_TJBA_ASSUNTO_OU_CLASSE_NOME
     );
     return [
       {
@@ -167,21 +168,20 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
     ];
   }
 
-  private static getCausaDePedir(): SimpleType[] {
+  protected getCausaDePedir(): SimpleType[] {
     const params = {
       parentElement: this.divMaisDetalhes,
       firstGuessQuerySelector: "dl > dt:nth-child(3)",
       IterableElementsQuerySelector: "dl dt",
       partialTextToSearch: "assunto",
     };
-    const causaDePedirFullString = super
-      .getValueFollowingCellSearchedByTextContent(params)
-      .trim();
+    const causaDePedirFullString =
+      getValueFollowingCellSearchedByTextContent(params).trim();
     const causaDePedirId = causaDePedirFullString.match(
-      this.PJE1G_TJBA_ASSUNTO_OU_CLASSE_ID
+      Pje1gTjbaProcessoScrapper.PJE1G_TJBA_ASSUNTO_OU_CLASSE_ID
     );
     const causaDePedirNome = causaDePedirFullString.match(
-      this.PJE1G_TJBA_ASSUNTO_OU_CLASSE_NOME
+      Pje1gTjbaProcessoScrapper.PJE1G_TJBA_ASSUNTO_OU_CLASSE_NOME
     );
     return [
       {
@@ -191,7 +191,7 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
     ];
   }
 
-  private static getSegredoJustica(): boolean {
+  protected getSegredoJustica(): boolean {
     const params = {
       parentElement: this.divMaisDetalhes,
       firstGuessQuerySelector: "dl > dt:nth-child(13)",
@@ -199,26 +199,26 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
       partialTextToSearch: "segredo de justiça",
     };
     const projudiSegredoJusticaString =
-      super.getValueFollowingCellSearchedByTextContent(params);
+      getValueFollowingCellSearchedByTextContent(params);
     return projudiSegredoJusticaString.toLowerCase() === "sim";
   }
 
-  private static getJuizo(): ScrappedUnidadeJurisdicional {
+  protected getJuizo(): ScrappedUnidadeJurisdicional {
     const params = {
       parentElement: this.divMaisDetalhes,
       firstGuessQuerySelector: "div:nth-child(2) > dl > dt",
       IterableElementsQuerySelector: "dl dt",
       partialTextToSearch: "órgão julgador",
     };
-    const juizoName = super.getValueFollowingCellSearchedByTextContent(params);
+    const juizoName = getValueFollowingCellSearchedByTextContent(params);
     return new ScrappedUnidadeJurisdicional(juizoName);
   }
 
-  private static getJuizAtual(): string {
+  protected getJuizAtual(): string {
     return null;
   }
 
-  private static getNumeroProcessoPrincipal(): string {
+  protected getNumeroProcessoPrincipal(): string {
     return undefined;
     //TODO: encontrar um processo que tenha processo principal para localizar a informação.
     // const params = {
@@ -231,11 +231,11 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
     // return processoPrincipal.toLowerCase().includes('o próprio') ? null : processoPrincipal
   }
 
-  private static getNumerosIncidentes(): string[] {
+  protected getNumerosIncidentes(): string[] {
     return [];
   }
 
-  private static getNumerosProcessosRelacionados(): string[] {
+  protected getNumerosProcessosRelacionados(): string[] {
     return [];
     //TODO: encontrar um processo que tenha processos dependentes para localizar a informação.
     // const params = {
@@ -248,8 +248,8 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
     // return processosRelacionados ? [processosRelacionados] : null
   }
 
-  private static getPartes(doc: Document): PartesReturn {
-    const partesScrapper = new Pje1gTjbaParteScrapper(doc);
+  protected getPartes(): PartesReturn {
+    const partesScrapper = new Pje1gTjbaParteScrapper(this.doc);
     const partes = partesScrapper.fetchParticipantesInfo();
     if (!partes) {
       return {
@@ -261,18 +261,16 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
     return partes;
   }
 
-  private static async getAndamentos(
-    doc: Document
-  ): Promise<ScrappedAndamento[]> {
-    const scrapper = new Pje1gTjbaAndamentosScrapper(doc);
+  protected async getAndamentos(): Promise<ScrappedAndamento[]> {
+    const scrapper = new Pje1gTjbaAndamentosScrapper(this.doc);
     return await scrapper.fetchAndamentosInfo();
   }
 
-  private static getPedidos(): string[] {
+  protected getPedidos(): string[] {
     return [];
   }
 
-  private static getAudienciaFutura(): ScrappedAndamento {
+  protected getAudienciaFutura(): ScrappedAndamento {
     // TODO: Procurar processo com audiência marcada para ver como o PJe mostra.
     // 'navbar:linkAbaAudiencia'
     // const audienciaProjudiDateString = lastRelevantAudiencia.observacao.match(this.PROJUDI_EXTENDED_DATE_REGEX)[0]

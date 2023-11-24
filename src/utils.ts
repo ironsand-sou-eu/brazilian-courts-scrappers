@@ -127,3 +127,42 @@ export function extendedTrim(
     ? trimmedStr
     : extendedTrim(trimmedStr, trimmableCharacters);
 }
+
+type ElementSearcherParams = {
+  parentElement: HTMLElement;
+  firstGuessQuerySelector: string;
+  IterableElementsQuerySelector: string;
+  partialTextToSearch: string;
+};
+
+export function getValueFollowingCellSearchedByTextContent(
+  searcherParams: ElementSearcherParams
+): string {
+  return getElementFollowingCellSearchedByTextContent(searcherParams)
+    ?.textContent;
+}
+
+export function getElementFollowingCellSearchedByTextContent({
+  parentElement,
+  firstGuessQuerySelector,
+  IterableElementsQuerySelector,
+  partialTextToSearch,
+}: ElementSearcherParams): HTMLElement {
+  const firstGuess = parentElement.querySelector(firstGuessQuerySelector);
+  if (
+    firstGuess?.textContent
+      .toLowerCase()
+      .includes(partialTextToSearch.toLowerCase())
+  ) {
+    return firstGuess.nextElementSibling as HTMLElement;
+  }
+
+  const slowChoice = Array.from(
+    parentElement.querySelectorAll(IterableElementsQuerySelector)
+  ).filter(iElement => {
+    return iElement.textContent
+      .toLowerCase()
+      .includes(partialTextToSearch.toLowerCase());
+  });
+  return slowChoice[0]?.nextElementSibling as HTMLElement;
+}
