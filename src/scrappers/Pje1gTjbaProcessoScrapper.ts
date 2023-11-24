@@ -6,9 +6,8 @@ import ScrappedUnidadeJurisdicional from "../data-structures/ScrappedUnidadeJuri
 import NotProcessoHomepageException from "../exceptions/NotProcessoHomepageException";
 import ProcessoScrapper from "./ProcessoScrapper";
 import Pje1gTjbaAndamentosScrapper from "./Pje1gTjbaAndamentosScrapper";
-import Pje1gTjbaParteScrapper, {
-  PartesReturn,
-} from "./Pje1gTjbaPartesScrapper";
+import Pje1gTjbaParteScrapper from "./Pje1gTjbaPartesScrapper";
+import { PartesReturn } from "./PartesScrapper";
 import { REGEX_CNJ_NUMBER } from "../utils";
 
 export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
@@ -250,8 +249,16 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
   }
 
   private static getPartes(doc: Document): PartesReturn {
-    const requerentes = Pje1gTjbaParteScrapper.fetchParticipantesInfo(doc);
-    return requerentes;
+    const partesScrapper = new Pje1gTjbaParteScrapper(doc);
+    const partes = partesScrapper.fetchParticipantesInfo();
+    if (!partes) {
+      return {
+        poloAtivo: null,
+        poloPassivo: null,
+        outros: null,
+      } as PartesReturn;
+    }
+    return partes;
   }
 
   private static async getAndamentos(

@@ -6,10 +6,9 @@ import ScrappedUnidadeJurisdicional from "../data-structures/ScrappedUnidadeJuri
 import NotProcessoHomepageException from "../exceptions/NotProcessoHomepageException";
 import ProcessoScrapper from "./ProcessoScrapper";
 import Pje1gTrt5AndamentosScrapper from "./Pje1gTrt5AndamentosScrapper";
-import Pje1gTrt5PartesScrapper, {
-  PartesReturn,
-} from "./Pje1gTrt5PartesScrapper";
+import Pje1gTrt5PartesScrapper from "./Pje1gTrt5PartesScrapper";
 import { waitForElement } from "../utils";
+import { PartesReturn } from "./PartesScrapper";
 
 export default class Pje1gTrt5ProcessoScrapper extends ProcessoScrapper {
   private static PROCESSO_HOME_PATH_PART = "/pjekz/processo/";
@@ -60,9 +59,8 @@ export default class Pje1gTrt5ProcessoScrapper extends ProcessoScrapper {
       "[aria-label*='resumo do processo']"
     );
     expandDetailsButton.click();
-    return await waitForElement("pje-parte-processo > section > ul", {
+    return await waitForElement("pje-parte-processo > section > ul", doc, {
       returnElementSelector: "#processo > div",
-      doc,
     });
   }
 
@@ -241,15 +239,14 @@ export default class Pje1gTrt5ProcessoScrapper extends ProcessoScrapper {
   }
 
   private static getPartes(): PartesReturn {
-    const partes = Pje1gTrt5PartesScrapper.fetchParticipantesInfo(
-      this.divDetails
-    );
+    const partesScrapper = new Pje1gTrt5PartesScrapper(this.divDetails);
+    const partes = partesScrapper.fetchParticipantesInfo();
     if (!partes) {
       return {
         poloAtivo: null,
         poloPassivo: null,
         outros: null,
-      } as PartesReturn;
+      };
     }
     return partes;
   }

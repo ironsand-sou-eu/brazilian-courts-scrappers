@@ -6,9 +6,8 @@ import ScrappedUnidadeJurisdicional from "../data-structures/ScrappedUnidadeJuri
 import NotProcessoHomepageException from "../exceptions/NotProcessoHomepageException";
 import ProcessoScrapper from "./ProcessoScrapper";
 import ProjudiTjbaAndamentosScrapper from "./ProjudiTjbaAndamentosScrapper";
-import ProjudiTjbaPartesScrapper, {
-  PartesReturn,
-} from "./ProjudiTjbaPartesScrapper";
+import ProjudiTjbaPartesScrapper from "./ProjudiTjbaPartesScrapper";
+import { PartesReturn } from "./PartesScrapper";
 
 type JuizoInfo = { juizo?: ScrappedUnidadeJurisdicional; nomeJuiz?: string };
 
@@ -274,7 +273,8 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
   }
 
   private static getPartes(doc: Document): PartesReturn {
-    const partes = ProjudiTjbaPartesScrapper.fetchParticipantesInfo(doc);
+    const partesScrapper = new ProjudiTjbaPartesScrapper(doc);
+    const partes = partesScrapper.fetchParticipantesInfo();
     if (!partes) {
       return {
         poloAtivo: null,
