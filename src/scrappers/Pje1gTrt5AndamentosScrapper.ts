@@ -34,9 +34,7 @@ class Pje1gTjbaAndamentosScrapper {
       "button[aria-label='Exibir movimentos.']"
     ) as HTMLButtonElement;
     expandButton.click();
-    await waitForElement(".pje-timeline > li > div > mat-card[id^='mov']", {
-      doc,
-    });
+    await waitForElement(".pje-timeline > li > div > mat-card[id^='mov']", doc);
   }
 
   static async #getAndamentos(): Promise<ScrappedAndamento[] | undefined> {
@@ -125,7 +123,7 @@ class Pje1gTjbaAndamentosScrapper {
     documentAnchor.click();
     const docAreaContainer = await waitForElement(
       "pje-historico-scroll-documento",
-      { doc: documentAnchor.ownerDocument }
+      documentAnchor.ownerDocument
     );
     if (!docAreaContainer) return new Promise(resolve => resolve(""));
     const extractors = {
@@ -133,17 +131,17 @@ class Pje1gTjbaAndamentosScrapper {
         console.warn(1);
         const documentWrapper = (await waitForElement(
           "pje-historico-scroll-documento object",
-          { doc: documentAnchor.ownerDocument }
+          documentAnchor.ownerDocument
         )) as HTMLObjectElement;
         if (!documentWrapper) return new Promise(resolve => resolve(""));
         console.warn(2, documentWrapper);
         const contentElement = await waitForElement(
           "body div#viewer div.endOfContent",
+          documentAnchor.ownerDocument,
           {
             returnElementSelector: "body div#viewer",
             documentParent: documentWrapper,
             waitForTextContent: false,
-            doc: documentAnchor.ownerDocument,
           }
         );
         console.warn(3, contentElement);
@@ -152,7 +150,8 @@ class Pje1gTjbaAndamentosScrapper {
       inline: async () => {
         return await waitForElement(
           "pje-historico-scroll-documento mat-card-content > span",
-          { waitForTextContent: true, doc: documentAnchor.ownerDocument }
+          documentAnchor.ownerDocument,
+          { waitForTextContent: true }
         );
       },
     };
@@ -175,11 +174,9 @@ class Pje1gTjbaAndamentosScrapper {
   static #getElementInnerText(contentElement: HTMLElement): string {
     const inHtml = contentElement.innerHTML;
     const noScriptInnerHtml = stripScriptTagsFromHtmlString(inHtml);
-    return getTextContent(
-      noScriptInnerHtml,
-      [{ expressionToSearch: /<br.*?>/gim, replacingText: "\n" }],
-      contentElement.ownerDocument
-    );
+    return getTextContent(noScriptInnerHtml, contentElement.ownerDocument, [
+      { expressionToSearch: /<br.*?>/gim, replacingText: "\n" },
+    ]);
   }
 
   static #getDate(li: HTMLElement, horaAndamento: string): Date {

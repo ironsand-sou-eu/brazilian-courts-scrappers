@@ -198,7 +198,7 @@ class Pje1gTjbaAndamentosScrapper {
     const noScriptInnerHtml = stripScriptTagsFromHtmlString(
       contentDoc.body.innerHTML
     );
-    return getTextContent(noScriptInnerHtml, undefined, contentDoc);
+    return getTextContent(noScriptInnerHtml, contentDoc);
   }
 }
 export default Pje1gTjbaAndamentosScrapper;

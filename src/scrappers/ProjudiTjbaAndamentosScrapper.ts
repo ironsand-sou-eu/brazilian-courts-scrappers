@@ -127,7 +127,7 @@ class ProjudiTjbaAndamentosScrapper {
     const htmlStr = dec.decode(charCodesArray);
     const bodyStr = this.#getBodyInnerHtmlFromHtmlString(htmlStr);
     const noScriptBodyStr = stripScriptTagsFromHtmlString(bodyStr);
-    return getTextContent(noScriptBodyStr, undefined, doc);
+    return getTextContent(noScriptBodyStr, doc);
   }
 
   static #getBodyInnerHtmlFromHtmlString(htmlStr: string): string {

@@ -24,15 +24,9 @@ export enum trtInterfacePolosNames {
 
 export type Sistema = "projudiTjba" | "pje1gTjba" | "pje1gTrt5";
 
-export function recursivelyRemoveDuplicatedLineBreaks(str: string): string {
-  const newStr = str.replace("\n\n", "\n");
-  if (newStr === str) return newStr;
-  return recursivelyRemoveDuplicatedLineBreaks(newStr);
-}
-
 type OptionsType = {
   returnElementSelector: string;
-  documentParent: HTMLObjectElement;
+  documentParent: HTMLObjectElement | HTMLIFrameElement;
   waitForTextContent: boolean;
   doc: Document;
 };
@@ -44,11 +38,11 @@ type CheckpointReturn = {
 
 export async function waitForElement(
   selector: string,
+  doc: Document,
   {
     returnElementSelector = selector,
     documentParent,
     waitForTextContent = false,
-    doc,
   }: Partial<OptionsType> = {}
 ): Promise<HTMLElement | null> {
   function reevaluateCheckpoints(): CheckpointReturn {
@@ -103,15 +97,16 @@ type Replace = { expressionToSearch: RegExp | string; replacingText: string };
 
 export function getTextContent(
   innerHtml: string,
-  replaces: Replace[] = [],
-  doc: Document
+  doc: Document,
+  replaces: Replace[] = []
 ): string {
   const div = doc.createElement("div");
-  replaces.forEach(({ expressionToSearch, replacingText }) =>
-    innerHtml.replace(expressionToSearch, replacingText)
+  replaces.forEach(
+    ({ expressionToSearch, replacingText }) =>
+      (innerHtml = innerHtml.replace(expressionToSearch, replacingText))
   );
   div.innerHTML = innerHtml;
-  return recursivelyRemoveDuplicatedLineBreaks(div.textContent ?? "").trim();
+  return stripBlankLines(div.textContent).trim();
 }
 
 export function extendedTrim(
