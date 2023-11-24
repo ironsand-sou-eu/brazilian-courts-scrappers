@@ -4,38 +4,29 @@ import {
   stripBlankLines,
   stripScriptTagsFromHtmlString,
 } from "../utils";
+import AndamentosScrapper from "./AndamentosScrapper";
 import Pje1gTjbaProcessoScrapper from "./Pje1gTjbaProcessoScrapper";
 
-class Pje1gTjbaAndamentosScrapper {
-  static #divTimeline: HTMLElement | null;
+class Pje1gTjbaAndamentosScrapper extends AndamentosScrapper {
+  protected divTimeline: HTMLElement | null;
 
-  /**
-   * @returns {ScrappedAndamento[]}
-   */
-  static async fetchAndamentosInfo(
-    doc: Document
-  ): Promise<ScrappedAndamento[] | undefined> {
-    try {
-      this.#loadPageCheckpoints(doc);
-      return await this.#getAndamentos(doc);
-    } catch (e) {
-      console.error(e);
-    }
+  constructor(protected doc: Document) {
+    super(doc);
   }
 
-  static #loadPageCheckpoints(doc: Document) {
-    this.#divTimeline = doc.getElementById(
+  public async fetchAndamentosInfo(): Promise<ScrappedAndamento[] | undefined> {
+    return await super.fetchAndamentosInfo();
+  }
+
+  protected loadPageCheckpoints(): void {
+    this.divTimeline = this.doc.getElementById(
       "divTimeLine:eventosTimeLineElement"
     );
   }
 
-  /**
-   * @returns {ScrappedAndamento[]}
-   */
-
-  static async #getAndamentos(doc: Document): Promise<ScrappedAndamento[]> {
-    if (this.#divTimeline == null) return [];
-    const andamentosMediaDivs = this.#divTimeline.querySelectorAll(
+  protected async getAndamentos(): Promise<ScrappedAndamento[] | undefined> {
+    if (this.divTimeline == null) return [];
+    const andamentosMediaDivs = this.divTimeline.querySelectorAll(
       ":scope > .media:not(.data)"
     ) as NodeListOf<HTMLElement>;
     const andamentos: ScrappedAndamento[] = [];
@@ -47,13 +38,12 @@ class Pje1gTjbaAndamentosScrapper {
       if (!bodyBoxDiv) continue;
       const horaAndamento =
         bodyBoxDiv.querySelector("small.text-muted")?.textContent?.trim() ?? "";
-      const [id, cancelado, docName, docContent] = await this.#getDocumentInfo(
+      const [id, cancelado, docName, docContent] = await this.getDocumentInfo(
         bodyBoxDiv,
-        andamentoPjeType,
-        doc
+        andamentoPjeType
       );
-      const data = this.#getDate(mediaDiv, horaAndamento);
-      const nomeOriginalSistemaJustica = this.#getNome(
+      const data = this.getDate(mediaDiv, horaAndamento);
+      const nomeOriginalSistemaJustica = this.getNome(
         bodyBoxDiv,
         docName as string
       );
@@ -72,17 +62,16 @@ class Pje1gTjbaAndamentosScrapper {
     return andamentos;
   }
 
-  static async #getDocumentInfo(
+  protected async getDocumentInfo(
     bodyBoxDiv: HTMLElement,
-    andamentoType: string,
-    doc: Document
+    andamentoType: string
   ): Promise<(string | boolean)[]> {
     if (andamentoType !== "documento") {
       return new Promise(resolve => resolve([]));
     }
     let mainDocumentNameString: string;
     let docContent: string = "";
-    const isCancelado = this.#isCancelado(bodyBoxDiv);
+    const isCancelado = this.isCancelado(bodyBoxDiv);
     if (isCancelado) {
       mainDocumentNameString = bodyBoxDiv
         .querySelector(".anexos > .anexos-inativos > span")!
@@ -94,43 +83,40 @@ class Pje1gTjbaAndamentosScrapper {
       mainDocumentNameString = mainDocumentA!
         .querySelector(":scope > span")!
         .textContent!.trim();
-      docContent = await this.#getDocumentTextContentIfExists(
-        mainDocumentA,
-        doc
-      );
+      docContent = await this.getDocumentTextContentIfExists(mainDocumentA);
     }
-    const id = this.#getIdFromDocString(mainDocumentNameString);
-    const docName = this.#getNameFromDocString(mainDocumentNameString);
+    const id = this.getIdFromDocString(mainDocumentNameString);
+    const docName = this.getNameFromDocString(mainDocumentNameString);
     return [id, isCancelado, docName, docContent];
   }
 
-  static #getIdFromDocString(docString: string): string {
+  protected getIdFromDocString(docString: string): string {
     const idRegex = /^\d+(?= -)/;
     const match = docString.match(idRegex);
     return match ? match[0] : "";
   }
 
-  static #getNameFromDocString(docString: string): string {
+  protected getNameFromDocString(docString: string): string {
     const idRegex = /(?<=^\d+ - ).+/;
     const match = docString.match(idRegex);
     return match ? match[0] : "";
   }
 
-  static #getDate(mediaDiv: HTMLElement, horaAndamento: string): Date {
-    const dateString = this.#findDateSibling(mediaDiv).textContent!.trim();
+  protected getDate(mediaDiv: HTMLElement, horaAndamento: string): Date {
+    const dateString = this.findDateSibling(mediaDiv).textContent!.trim();
     return Pje1gTjbaProcessoScrapper.getDateFromPjeTjbaDateString(
       dateString,
       horaAndamento
     );
   }
 
-  static #findDateSibling(mediaDiv: HTMLElement): HTMLElement {
+  protected findDateSibling(mediaDiv: HTMLElement): HTMLElement {
     const prevSibling = mediaDiv.previousElementSibling! as HTMLElement;
     if (Array.from(prevSibling.classList).includes("data")) return prevSibling;
-    return this.#findDateSibling(prevSibling);
+    return this.findDateSibling(prevSibling);
   }
 
-  static #getNome(bodyBoxDiv: HTMLElement, filename: string = ""): string {
+  protected getNome(bodyBoxDiv: HTMLElement, filename: string = ""): string {
     if (filename !== "") {
       const matchParenthesisResults = filename.match(/.+(?= (\(.+\))$)/);
       return matchParenthesisResults
@@ -146,41 +132,37 @@ class Pje1gTjbaAndamentosScrapper {
     return titles[0];
   }
 
-  static #isCancelado(bodyBoxDiv: HTMLElement): boolean {
+  protected isCancelado(bodyBoxDiv: HTMLElement): boolean {
     const inativosDiv = bodyBoxDiv.querySelector(".anexos > .anexos-inativos");
     return !!inativosDiv;
     // TODO: buscar exemplo de andamento cancelado SEM DOCUMENTO no PJe
   }
 
-  static async #getDocumentTextContentIfExists(
-    documentAnchor: HTMLAnchorElement,
-    doc: Document
+  protected async getDocumentTextContentIfExists(
+    documentAnchor: HTMLAnchorElement
   ): Promise<string> {
-    if (this.#isPdf(documentAnchor)) return new Promise(resolve => resolve(""));
+    if (this.isPdf(documentAnchor)) return new Promise(resolve => resolve(""));
     documentAnchor.click();
-    const contentDoc = await this.#waitPageLoad("#frameHtml", doc);
+    const contentDoc = await this.waitPageLoad("#frameHtml");
     await new Promise(resolve => setTimeout(resolve, 250));
-    if (this.#isPjeDocumentLandingPageBug(contentDoc))
+    if (this.isPjeDocumentLandingPageBug(contentDoc))
       return new Promise(resolve => resolve(""));
-    else return this.#getDocumentTextContent(contentDoc);
+    else return this.getDocumentTextContent(contentDoc);
   }
 
-  static #isPdf(documentAnchor: HTMLAnchorElement): boolean {
+  protected isPdf(documentAnchor: HTMLAnchorElement): boolean {
     const icon = documentAnchor.querySelector(":scope > i:first-child")!;
     return Array.from(icon.classList).includes("fa-file-pdf-o");
   }
 
-  static async #waitPageLoad(
-    iframeDocSelector: string,
-    doc: Document
-  ): Promise<Document> {
+  protected async waitPageLoad(iframeDocSelector: string): Promise<Document> {
     let readystateComplete: boolean = false;
     let bodyLengthChanged: boolean = false;
     let bodyLength: number | undefined = undefined;
     let iframe: HTMLIFrameElement | null;
     while (!readystateComplete || bodyLengthChanged) {
       await new Promise(resolve => setTimeout(resolve, 350));
-      iframe = doc.querySelector(iframeDocSelector);
+      iframe = this.doc.querySelector(iframeDocSelector);
       readystateComplete = iframe?.contentDocument?.readyState === "complete";
       bodyLengthChanged =
         bodyLength !== iframe?.contentDocument?.body.children.length;
@@ -189,12 +171,12 @@ class Pje1gTjbaAndamentosScrapper {
     return iframe!.contentDocument!;
   }
 
-  static #isPjeDocumentLandingPageBug(htmlDoc: Document): boolean {
+  protected isPjeDocumentLandingPageBug(htmlDoc: Document): boolean {
     if (htmlDoc.head.children.length > 3) return true;
     else return false;
   }
 
-  static #getDocumentTextContent(contentDoc: Document): string {
+  protected getDocumentTextContent(contentDoc: Document): string {
     const noScriptInnerHtml = stripScriptTagsFromHtmlString(
       contentDoc.body.innerHTML
     );

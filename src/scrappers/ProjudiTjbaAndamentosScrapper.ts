@@ -4,32 +4,31 @@ import {
   stripBlankLines,
   stripScriptTagsFromHtmlString,
 } from "../utils";
+import AndamentosScrapper from "./AndamentosScrapper";
 
-class ProjudiTjbaAndamentosScrapper {
-  static #HTML_BODY_REGEX = /<body[^]*<\/body>/gi;
-  static #divAndamentosTbody: HTMLElement;
+class ProjudiTjbaAndamentosScrapper extends AndamentosScrapper {
+  protected HTML_BODY_REGEX = /<body[^]*<\/body>/gi;
+  protected divAndamentosTbody: HTMLElement;
 
-  static async fetchAndamentosInfo(
-    doc: Document
-  ): Promise<ScrappedAndamento[] | undefined> {
-    try {
-      this.#loadPageCheckpoints(doc);
-      return await this.#getAndamentos();
-    } catch (e) {
-      console.error(e);
-    }
+  constructor(protected doc: Document) {
+    super(doc);
   }
 
-  static #loadPageCheckpoints(doc: Document): void {
-    this.#divAndamentosTbody = doc.querySelector("#Arquivos > table > tbody")!;
+  public async fetchAndamentosInfo(): Promise<ScrappedAndamento[] | undefined> {
+    return await super.fetchAndamentosInfo();
   }
 
-  static async #getAndamentos(): Promise<ScrappedAndamento[]> {
+  protected loadPageCheckpoints(): void {
+    this.divAndamentosTbody = this.doc.querySelector(
+      "#Arquivos > table > tbody"
+    )!;
+  }
+
+  protected async getAndamentos(): Promise<ScrappedAndamento[] | undefined> {
     const andamentos = [];
-    const andamentosTrs =
-      this.#divAndamentosTbody.querySelectorAll<HTMLElement>(
-        "tr:not(tr:first-of-type, tr *)"
-      );
+    const andamentosTrs = this.divAndamentosTbody.querySelectorAll<HTMLElement>(
+      "tr:not(tr:first-of-type, tr *)"
+    );
     for (const tr of Array.from(andamentosTrs)) {
       const id = tr
         .querySelector("td > table > tbody > tr > td:nth-child(1)")!
@@ -37,14 +36,14 @@ class ProjudiTjbaAndamentosScrapper {
       const dataStr = tr
         .querySelector("td > table > tbody > tr > td:nth-child(3)")!
         .textContent!.trim();
-      const data = this.#brStringToDate(dataStr);
+      const data = this.brStringToDate(dataStr);
       const agente = tr
         .querySelector("td > table > tbody > tr > td:nth-child(4)")!
         .textContent!.trim();
       const nomeAndamentoTd = tr.querySelector(
         "td > table > tbody > tr > td:nth-child(2)"
       ) as HTMLElement;
-      const cancelado = this.#isCancelado(nomeAndamentoTd);
+      const cancelado = this.isCancelado(nomeAndamentoTd);
       const nomeOriginalSistemaJustica = nomeAndamentoTd
         .querySelector<HTMLElement>("b > font")!
         .innerText.trim();
@@ -58,7 +57,7 @@ class ProjudiTjbaAndamentosScrapper {
           .querySelector("td > table + span:first-of-type")
           ?.textContent?.trim() ?? "";
       const contentInDocument =
-        (await this.#getDocumentTextContentIfExists(tr)) ?? "";
+        (await this.getDocumentTextContentIfExists(tr)) ?? "";
       const fullObservacao = `${obsUnderNomeAndamento}\n${contentInButton}\n${contentInDocument}`;
       const observacao = stripBlankLines(fullObservacao);
       const andamento = new ScrappedAndamento(
@@ -74,7 +73,7 @@ class ProjudiTjbaAndamentosScrapper {
     return andamentos;
   }
 
-  static #brStringToDate(str: string): Date {
+  protected brStringToDate(str: string): Date {
     const items = str.split("/");
     if (items[2].length === 2) items[2] = `20` + items[2];
     return new Date(
@@ -84,12 +83,12 @@ class ProjudiTjbaAndamentosScrapper {
     );
   }
 
-  static #isCancelado(andamentoTd: HTMLElement): boolean {
+  protected isCancelado(andamentoTd: HTMLElement): boolean {
     //TODO: provavelmente é na classlist
     return andamentoTd.innerHTML.includes("strike");
   }
 
-  static async #getDocumentTextContentIfExists(
+  protected async getDocumentTextContentIfExists(
     tr: HTMLElement
   ): Promise<string> {
     const documentsRows = tr.querySelectorAll(
@@ -102,19 +101,13 @@ class ProjudiTjbaAndamentosScrapper {
       if (a && a.innerText === "online.html") docUri = a.href;
     });
     if (!docUri) return new Promise(resolve => resolve(""));
-    const docTextContent = await this.#getDocumentTextContent(
-      docUri,
-      tr.ownerDocument
-    );
-    if (this.#documentIsNotRelevant(docTextContent))
+    const docTextContent = await this.getDocumentTextContent(docUri);
+    if (this.documentIsNotRelevant(docTextContent))
       return new Promise(resolve => resolve(""));
     return docTextContent;
   }
 
-  static async #getDocumentTextContent(
-    uri: string,
-    doc: Document
-  ): Promise<string> {
+  protected async getDocumentTextContent(uri: string): Promise<string> {
     const response = await fetch(uri, { method: "GET" });
     if (!response.ok) {
       throw new Error(
@@ -125,18 +118,18 @@ class ProjudiTjbaAndamentosScrapper {
     const charCodesArray = new Uint8Array(arrBuffer);
     const dec = new TextDecoder("windows-1252");
     const htmlStr = dec.decode(charCodesArray);
-    const bodyStr = this.#getBodyInnerHtmlFromHtmlString(htmlStr);
+    const bodyStr = this.getBodyInnerHtmlFromHtmlString(htmlStr);
     const noScriptBodyStr = stripScriptTagsFromHtmlString(bodyStr);
-    return getTextContent(noScriptBodyStr, doc);
+    return getTextContent(noScriptBodyStr, this.doc);
   }
 
-  static #getBodyInnerHtmlFromHtmlString(htmlStr: string): string {
-    const bodyMatches = htmlStr.match(this.#HTML_BODY_REGEX);
+  protected getBodyInnerHtmlFromHtmlString(htmlStr: string): string {
+    const bodyMatches = htmlStr.match(this.HTML_BODY_REGEX);
     if (bodyMatches === null) return `<body>${htmlStr}</body>`;
     return bodyMatches[0];
   }
 
-  static #documentIsNotRelevant(textContent: string): boolean {
+  protected documentIsNotRelevant(textContent: string): boolean {
     const lowCaseDocText = textContent.toLowerCase();
     const notRelevant =
       lowCaseDocText.includes("endereço para devolução do ar") &&

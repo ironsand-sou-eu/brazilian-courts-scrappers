@@ -288,7 +288,8 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
   private static async getAndamentos(
     doc: Document
   ): Promise<ScrappedAndamento[] | undefined> {
-    return await ProjudiTjbaAndamentosScrapper.fetchAndamentosInfo(doc);
+    const scrapper = new ProjudiTjbaAndamentosScrapper(doc);
+    return await scrapper.fetchAndamentosInfo();
   }
 
   private static getPedidos(): string[] {

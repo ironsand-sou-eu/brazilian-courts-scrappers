@@ -254,7 +254,8 @@ export default class Pje1gTrt5ProcessoScrapper extends ProcessoScrapper {
   private static async getAndamentos(
     doc: Document
   ): Promise<ScrappedAndamento[]> {
-    return await Pje1gTrt5AndamentosScrapper.fetchAndamentosInfo(doc);
+    const scrapper = new Pje1gTrt5AndamentosScrapper(doc);
+    return await scrapper.fetchAndamentosInfo();
   }
 
   private static getPedidos(): string[] {

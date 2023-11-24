@@ -5,41 +5,41 @@ import {
   stripScriptTagsFromHtmlString,
   waitForElement,
 } from "../utils";
+import AndamentosScrapper from "./AndamentosScrapper";
 
 type AndamentoType = "documento" | "movimentação";
 
-class Pje1gTjbaAndamentosScrapper {
-  static #lisAndamentos: NodeListOf<HTMLElement>;
+class Pje1gTjbaAndamentosScrapper extends AndamentosScrapper {
+  protected lisAndamentos: NodeListOf<HTMLElement>;
 
-  static async fetchAndamentosInfo(
-    doc: Document
-  ): Promise<ScrappedAndamento[] | undefined> {
-    try {
-      await this.#loadPageCheckpoints(doc);
-      return await this.#getAndamentos();
-    } catch (e) {
-      console.error(e);
-    }
+  constructor(protected doc: Document) {
+    super(doc);
   }
 
-  static async #loadPageCheckpoints(doc: Document) {
-    await this.#expandMovimentos(doc);
-    this.#lisAndamentos = doc.querySelectorAll(
-      ".pje-timeline > li"
-    ) as NodeListOf<HTMLElement>;
+  public async fetchAndamentosInfo(): Promise<ScrappedAndamento[] | undefined> {
+    return await super.fetchAndamentosInfo();
   }
 
-  static async #expandMovimentos(doc: Document) {
-    const expandButton = doc.querySelector(
+  protected async loadPageCheckpoints(): Promise<void> {
+    await this.expandMovimentos();
+    this.lisAndamentos =
+      this.doc.querySelectorAll<HTMLElement>(".pje-timeline > li");
+  }
+
+  protected async expandMovimentos() {
+    const expandButton = this.doc.querySelector(
       "button[aria-label='Exibir movimentos.']"
     ) as HTMLButtonElement;
     expandButton.click();
-    await waitForElement(".pje-timeline > li > div > mat-card[id^='mov']", doc);
+    await waitForElement(
+      ".pje-timeline > li > div > mat-card[id^='mov']",
+      this.doc
+    );
   }
 
-  static async #getAndamentos(): Promise<ScrappedAndamento[] | undefined> {
+  protected async getAndamentos(): Promise<ScrappedAndamento[] | undefined> {
     const andamentos = [];
-    for (const li of Array.from(this.#lisAndamentos)) {
+    for (const li of Array.from(this.lisAndamentos)) {
       const andamentoMatcardId = li
         .querySelector(":scope > div > mat-card")!
         .getAttribute("id")!;
@@ -47,15 +47,15 @@ class Pje1gTjbaAndamentosScrapper {
         ? "documento"
         : "movimentação";
       const elMatCard = li.querySelector("mat-card") as HTMLElement;
-      const [id, cancelado, docName, docContent] = await this.#getDocumentInfo(
+      const [id, cancelado, docName, docContent] = await this.getDocumentInfo(
         elMatCard,
         andamentoType
       );
       const horaAndamento = elMatCard
         .querySelector(":scope div.tl-item-hora")!
         .textContent!.trim();
-      const data = this.#getDate(li, horaAndamento);
-      const nomeOriginalSistemaJustica = this.#getNome(
+      const data = this.getDate(li, horaAndamento);
+      const nomeOriginalSistemaJustica = this.getNome(
         elMatCard,
         docName as string
       );
@@ -74,7 +74,7 @@ class Pje1gTjbaAndamentosScrapper {
     return await Promise.all(andamentos);
   }
 
-  static async #getDocumentInfo(
+  protected async getDocumentInfo(
     elMatCard: HTMLElement,
     andamentoType: AndamentoType
   ): Promise<(string | boolean)[]> {
@@ -82,17 +82,17 @@ class Pje1gTjbaAndamentosScrapper {
       return new Promise(resolve => resolve([]));
     }
     const isCancelado = !!elMatCard.querySelector(":scope a.is-inativo");
-    const docName = this.#getDocName(elMatCard);
+    const docName = this.getDocName(elMatCard);
     const id =
       elMatCard
         .querySelector(":scope > div > a > span.ng-star-inserted")
         ?.textContent?.replace("- ", "")
         .trim() ?? "";
-    const docContent = await this.#getDocContent(elMatCard, isCancelado);
+    const docContent = await this.getDocContent(elMatCard, isCancelado);
     return [id, isCancelado, docName, docContent];
   }
 
-  static #getDocName(elMatCard: HTMLElement): string {
+  protected getDocName(elMatCard: HTMLElement): string {
     const nameSpans = Array.from(
       elMatCard.querySelectorAll(":scope > div > a > span:not([class])")
     );
@@ -103,7 +103,7 @@ class Pje1gTjbaAndamentosScrapper {
     return `${firstNameStr} ${secondNameStr}`;
   }
 
-  static async #getDocContent(
+  protected async getDocContent(
     elMatCard: HTMLElement,
     isCancelado: boolean
   ): Promise<string> {
@@ -112,12 +112,11 @@ class Pje1gTjbaAndamentosScrapper {
       "a:not(.ng-star-inserted)"
     ) as HTMLAnchorElement;
     if (!mainDocumentA) return new Promise(resolve => resolve(""));
-    const docContent =
-      await this.#getDocumentTextContentIfExists(mainDocumentA);
+    const docContent = await this.getDocumentTextContentIfExists(mainDocumentA);
     return docContent ?? "";
   }
 
-  static async #getDocumentTextContentIfExists(
+  protected async getDocumentTextContentIfExists(
     documentAnchor: HTMLAnchorElement
   ): Promise<string> {
     documentAnchor.click();
@@ -155,15 +154,15 @@ class Pje1gTjbaAndamentosScrapper {
         );
       },
     };
-    const parser = this.#isPdf(<HTMLElement>docAreaContainer)
+    const parser = this.isPdf(<HTMLElement>docAreaContainer)
       ? extractors.pdf
       : extractors.inline;
     const contentElement = await parser();
     if (!contentElement) return new Promise(resolve => resolve(""));
-    return this.#getElementInnerText(<HTMLElement>contentElement);
+    return this.getElementInnerText(<HTMLElement>contentElement);
   }
 
-  static #isPdf(docAreaContainer: HTMLElement): boolean {
+  protected isPdf(docAreaContainer: HTMLElement): boolean {
     console.warn({
       docAreaContainer,
       ifQs: !!docAreaContainer.querySelector("div.container-pdf > object"),
@@ -171,7 +170,7 @@ class Pje1gTjbaAndamentosScrapper {
     return !!docAreaContainer.querySelector("div.container-pdf > object");
   }
 
-  static #getElementInnerText(contentElement: HTMLElement): string {
+  protected getElementInnerText(contentElement: HTMLElement): string {
     const inHtml = contentElement.innerHTML;
     const noScriptInnerHtml = stripScriptTagsFromHtmlString(inHtml);
     return getTextContent(noScriptInnerHtml, contentElement.ownerDocument, [
@@ -179,25 +178,25 @@ class Pje1gTjbaAndamentosScrapper {
     ]);
   }
 
-  static #getDate(li: HTMLElement, horaAndamento: string): Date {
-    const dateString = this.#findDateString(li);
-    return this.#getDateFromPje1gTrt5AndamentoDateString(
+  protected getDate(li: HTMLElement, horaAndamento: string): Date {
+    const dateString = this.findDateString(li);
+    return this.getDateFromPje1gTrt5AndamentoDateString(
       dateString,
       horaAndamento
     );
   }
 
-  static #findDateString(li: Element): string {
+  protected findDateString(li: Element): string {
     if (li.querySelector(":scope > div[role=heading]")) {
       return (
         li.querySelector(":scope > div[role=heading]")?.textContent?.trim() ??
         ""
       );
     }
-    return this.#findDateString(li.previousElementSibling!);
+    return this.findDateString(li.previousElementSibling!);
   }
 
-  static #getDateFromPje1gTrt5AndamentoDateString(
+  protected getDateFromPje1gTrt5AndamentoDateString(
     dateStr: string,
     timeStr = "00:00"
   ): Date {
@@ -222,7 +221,7 @@ class Pje1gTjbaAndamentosScrapper {
     return new Date(iso8601DateString);
   }
 
-  static #getNome(elMatCard: HTMLElement, docName = ""): string {
+  protected getNome(elMatCard: HTMLElement, docName = ""): string {
     if (docName !== "") {
       const withoutParenthesisResults = docName.match(/.+(?= ?(\(.+\))$)/);
       return withoutParenthesisResults
