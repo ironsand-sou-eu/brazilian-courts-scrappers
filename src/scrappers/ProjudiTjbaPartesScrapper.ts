@@ -14,6 +14,10 @@ export default class ProjudiTjbaPartesScrapper extends PartesScrapper {
     super(macroContainer);
   }
 
+  public fetchParticipantesInfo(): PartesReturn | undefined {
+    return super.fetchParticipantesInfo();
+  }
+
   protected loadPageCheckpoints(): void {
     const divPartesTbody = this.macroContainer.querySelector(
       "#Partes > table > tbody"

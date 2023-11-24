@@ -18,6 +18,10 @@ export default class Pje1gTjbaParteScrapper extends PartesScrapper {
     super(macroContainer);
   }
 
+  public fetchParticipantesInfo(): PartesReturn | undefined {
+    return super.fetchParticipantesInfo();
+  }
+
   protected loadPageCheckpoints(): void {
     this.divPoloAtivoTbody = this.macroContainer.querySelector(
       "#poloAtivo > table > tbody"

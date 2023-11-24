@@ -29,6 +29,10 @@ export default class Pje1gTjbaParteScrapper extends PartesScrapper {
     super(macroContainer);
   }
 
+  public fetchParticipantesInfo(): PartesReturn | undefined {
+    return super.fetchParticipantesInfo();
+  }
+
   protected loadPageCheckpoints(): void {
     const partesContainers = this.macroContainer.querySelectorAll(
       ".is-item-pilha-parte"
