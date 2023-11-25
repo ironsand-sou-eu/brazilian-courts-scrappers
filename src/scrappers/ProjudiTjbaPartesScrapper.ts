@@ -1,8 +1,19 @@
 import ScrappedParte from "../data-structures/ScrappedParte";
-import { extendedTrim, tiposParte } from "../utils";
+import {
+  extendedTrim,
+  getTextContent,
+  stripScriptTagsFromHtmlString,
+  tiposParte,
+} from "../utils";
 import PartesScrapper, { PartesReturn } from "./PartesScrapper";
 
-type ContactInfo = { address: string; email: string; phone: string };
+export type ContactInfo = { address: string; email: string; phone: string };
+export type CpfCnpjInfo = {
+  dontHaveCpfCnpj: boolean;
+  noCpfCnpjReason: string;
+  cpf: string;
+  cnpj: string;
+};
 
 export default class ProjudiTjbaPartesScrapper extends PartesScrapper {
   protected poloAtivoWrapperTd: HTMLElement;
@@ -19,27 +30,27 @@ export default class ProjudiTjbaPartesScrapper extends PartesScrapper {
   }
 
   protected loadPageCheckpoints(): void {
-    const divPartesTbody = this.macroContainer.querySelector(
-      "#Partes > table > tbody"
-    )!;
     const querySelectors = {
-      autor: ":scope > tr:nth-child(2) > td:nth-child(2)",
-      reu: ":scope > tr:nth-child(3) > td:nth-child(2)",
-      testemunha: ":scope > tr:nth-child(4) > td:nth-child(2)",
-      terceiro: ":scope > tr:nth-child(5) > td:nth-child(2)",
+      autores: "#Partes > table > tbody > tr:nth-child(2) > td:nth-child(2)",
+      reus: "#Partes > table > tbody > tr:nth-child(3) > td:nth-child(2)",
+      testemunhas:
+        "#Partes > table > tbody > tr:nth-child(4) > td:nth-child(2)",
+      terceiros: "#Partes > table > tbody > tr:nth-child(5) > td:nth-child(2)",
     };
-    this.poloAtivoWrapperTd = divPartesTbody.querySelector(
-      querySelectors.autor
-    )!;
-    this.poloPassivoWrapperTd = divPartesTbody.querySelector(
-      querySelectors.reu
-    )!;
-    this.testemunhasWrapperTd = divPartesTbody.querySelector(
-      querySelectors.testemunha
-    )!;
-    this.terceirosWrapperTd = divPartesTbody.querySelector(
-      querySelectors.terceiro
-    )!;
+    this.poloAtivoWrapperTd = this.macroContainer.querySelector(
+      querySelectors.autores
+    );
+    this.poloPassivoWrapperTd = this.macroContainer.querySelector(
+      querySelectors.reus
+    );
+    this.testemunhasWrapperTd = this.macroContainer.querySelector(
+      querySelectors.testemunhas
+    );
+    // console.log("here testemunhas", this.testemunhasWrapperTd.textContent);
+    this.terceirosWrapperTd = this.macroContainer.querySelector(
+      querySelectors.terceiros
+    );
+    // console.log("here terceiros", this.terceirosWrapperTd.textContent);
   }
 
   protected getPartes(): PartesReturn {
@@ -58,12 +69,12 @@ export default class ProjudiTjbaPartesScrapper extends PartesScrapper {
     poloWrapperTd: HTMLElement,
     tipoDeParte: tiposParte
   ): ScrappedParte[] {
-    const partesTbody = poloWrapperTd.querySelector(
-      "table.tabelaLista tbody"
-    ) as HTMLElement;
+    const partesTbody: HTMLElement = poloWrapperTd.querySelector(
+      ":scope table.tabelaLista[id^=tabelaPartes] > tbody"
+    );
     return Array.from(
       partesTbody.querySelectorAll<HTMLElement>(
-        ":scope > tbody > tr[id]:not([id^=trAdv])"
+        ":scope > tr[id]:not([id^=trAdv])"
       )
     ).map(tr => {
       return this.getParte(poloWrapperTd, tr, tipoDeParte);
@@ -78,7 +89,7 @@ export default class ProjudiTjbaPartesScrapper extends PartesScrapper {
     const name = tr.querySelector("td:nth-child(2)")!.textContent!.trim();
     const cpfCnpjStr = tr
       .querySelector<HTMLElement>("td:nth-child(4)")!
-      .innerText!.trim();
+      .textContent!.trim();
     const { dontHaveCpfCnpj, noCpfCnpjReason, cpf, cnpj } =
       this.getCpfCnpjFromString(cpfCnpjStr);
     const judSystemId = tr.id.replace("tr", "");
@@ -103,15 +114,15 @@ export default class ProjudiTjbaPartesScrapper extends PartesScrapper {
     );
   }
 
-  protected getCpfCnpjFromString(cpfCnpj: string) {
+  protected getCpfCnpjFromString(cpfCnpj: string): CpfCnpjInfo {
+    cpfCnpj = cpfCnpj.split("\n")[0];
     const dontHaveCpfCnpj = cpfCnpj.toLowerCase() === "não cadastrado";
     const noCpfCnpjReason =
       cpfCnpj.toLowerCase() === "não cadastrado"
         ? "Não cadastrado no Projudi"
         : "";
-    const dashDotSlashStrippedString = cpfCnpj.replaceAll(/[^\d]/g, "");
-    const cpf = dashDotSlashStrippedString.length === 11 ? cpfCnpj : "";
-    const cnpj = dashDotSlashStrippedString.length === 14 ? cpfCnpj : "";
+    const cpf = !cpfCnpj.includes("/") ? cpfCnpj.trim() : "";
+    const cnpj = cpfCnpj.includes("/") ? cpfCnpj.trim() : "";
     return { dontHaveCpfCnpj, noCpfCnpjReason, cpf, cnpj };
   }
 

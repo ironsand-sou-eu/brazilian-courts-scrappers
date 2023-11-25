@@ -1,0 +1,2364 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjudiTjbaPartesScrapper should load 4 partes TD containers into the respective properties 1`] = `
+<td
+  class="tCinza"
+  colspan="3"
+>
+  
+          
+  <script
+    src="/projudi/dwr/engine.js"
+  />
+  
+          
+  <script
+    src="/projudi/dwr/util.js"
+  />
+  
+          
+  <script
+    src="/projudi/dwr/interface/ParteService.js"
+    type="text/javascript"
+  />
+  
+
+          
+  <script>
+    
+            var codParteSelect = 0;
+            function obterQuantProcessoParte(codParte) {
+              codParteSelect = codParte;
+              ParteService.obterQuantidadeProcessoParte(
+                codParte,
+                exibeQuantProcessoParte
+              );
+              document.getElementById("div" + codParte).innerHTML =
+                '&lt;font color="#AA1C1C"&gt;Carregando ...&lt;/font&gt;';
+            }
+            function exibeQuantProcessoParte(valor) {
+              div = document.getElementById("div" + codParteSelect);
+              div.innerHTML =
+                '&lt;a href="/projudi/buscas/ProcessosParte?fm=post&codParte=' +
+                codParteSelect +
+                '&nome=""""&gt;(' +
+                valor +
+                " Processo(s) Distribuído(s))&lt;/a&gt;";
+            }
+
+            function mostraOculta(
+              idParteProcesso,
+              idTabela,
+              linhaCount,
+              tipoInfo
+            ) {
+              var titulo;
+              var conteudoHTML;
+              span = document.getElementById(
+                "span" + tipoInfo + idParteProcesso
+              );
+              trEndAdv = document.getElementById(
+                "tr" + tipoInfo + idParteProcesso
+              );
+              tr = document.getElementById("tr" + idParteProcesso);
+              td = document.getElementById("td" + idParteProcesso);
+              td1 = document.getElementById("td1" + idParteProcesso);
+              tabela = document.getElementById(idTabela);
+
+              if (trEndAdv == null) {
+                novotr = tabela.insertRow(tr.rowIndex + 1);
+                novotr.id = "tr" + tipoInfo + idParteProcesso;
+                if (linhaCount % 2 == 0) {
+                  novotr.className = "linhaEscura";
+                } else {
+                  novotr.className = "linhaClara";
+                }
+                novotd = novotr.insertCell(0);
+                novotd.innerHTML = span.innerHTML;
+
+                novotd.colSpan = 4;
+                td.rowSpan = td.rowSpan + 1;
+                td1.rowSpan = td1.rowSpan + 1;
+              } else {
+                td.rowSpan = td.rowSpan - 1;
+                td1.rowSpan = td1.rowSpan - 1;
+
+                tabela.deleteRow(trEndAdv.rowIndex);
+              }
+            }
+
+            function excluirParte(radioExcluirNome, tableExcluirNome) {
+              radioExcluirParte = document.getElementById(radioExcluirNome);
+              tableExcluirParte = document.getElementById(tableExcluirNome);
+
+              var itens = tableExcluirParte.getElementsByTagName("input");
+              var checked = false;
+
+              for (i = 0; i &lt; itens.length; i++) {
+                if (itens[i].type == "radio") {
+                  checked = itens[i].checked;
+                  if (itens[i].checked) break;
+                }
+              }
+
+              if (checked) {
+                if (
+                  confirm(
+                    "Tem certeza que deseja excluir do processo a parte selecionada?"
+                  )
+                )
+                  doPost(radioExcluirParte.name, null, 0);
+              } else {
+                alert("Selecione uma Parte para excluir.");
+              }
+            }
+          
+  </script>
+  
+
+          
+  <table
+    class="tabelaLista"
+    id="tabelaPartes1"
+    style="width: 100%"
+  >
+    
+            
+    <tbody>
+      
+              
+      <tr>
+        
+                
+        <th />
+        
+
+                
+        <th>
+          Nome
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Identidade
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          CPF
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Advogados
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Endereço
+        </th>
+        
+              
+      </tr>
+      
+
+              
+      <tr
+        class="linhaClara"
+        id="tr10912776"
+      >
+        
+                
+        <td
+          id="td10912776"
+          style="white-space: nowrap; text-align: center; width: 20px"
+        >
+          
+                  
+          <a
+            href="/projudi/listagens/DadosParte?codParte=3125187"
+          >
+            
+                    
+            <img
+              alt="Dados da Parte"
+              border="0"
+              onmouseout="this.src='/projudi/imagens/dadosParte.png'"
+              onmouseover="this.src='/projudi/imagens/dadosParte02.png'"
+              src="/projudi/imagens/dadosParte.png"
+            />
+            
+                  
+          </a>
+          
+                
+        </td>
+        
+
+                
+        <td
+          id="td110912776"
+          style="padding-left: 5px"
+        >
+          
+                  JUSSARA MENDONCA LYRA MARTINS
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        />
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  053.995.967-76
+                  
+          <script>
+            
+                    if (
+                      "053.995.967-76".indexOf("-") == -1 &&
+                      "053.995.967-76".indexOf("Não cadastrado") == -1
+                    ) {
+                      document.write(
+                        '&lt;br&gt;&lt;font color="red"&gt;&lt;b&gt;(Inválido!)&lt;/b&gt;&lt;/font&gt;'
+                      );
+                    }
+                  
+          </script>
+          
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  
+          <a
+            href="javascript: mostraOculta('10912776','tabelaPartes1',1,'Adv')"
+          >
+            Mostrar/Ocultar
+          </a>
+          
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  
+          <a
+            href="javascript: mostraOculta('10912776','tabelaPartes1',1,'End')"
+          >
+            Mostrar/Ocultar
+          </a>
+          
+                
+        </td>
+        
+              
+      </tr>
+      
+
+              
+      <tr
+        class="linhaEscura"
+        id="tr10912777"
+      >
+        
+                
+        <td
+          id="td10912777"
+          style="white-space: nowrap; text-align: center; width: 20px"
+        >
+          
+                  
+          <a
+            href="/projudi/listagens/DadosParte?codParte=3125188"
+          >
+            
+                    
+            <img
+              alt="Dados da Parte"
+              border="0"
+              onmouseout="this.src='/projudi/imagens/dadosParte.png'"
+              onmouseover="this.src='/projudi/imagens/dadosParte02.png'"
+              src="/projudi/imagens/dadosParte.png"
+            />
+            
+                  
+          </a>
+          
+                
+        </td>
+        
+
+                
+        <td
+          id="td110912777"
+          style="padding-left: 5px"
+        >
+          
+                  MARCIO INACIO MARTINS
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        />
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  949.499.488-49
+                  
+          <script>
+            
+                    if (
+                      "949.499.488-49".indexOf("-") == -1 &&
+                      "949.499.488-49".indexOf("Não cadastrado") == -1
+                    ) {
+                      document.write(
+                        '&lt;br&gt;&lt;font color="red"&gt;&lt;b&gt;(Inválido!)&lt;/b&gt;&lt;/font&gt;'
+                      );
+                    }
+                  
+          </script>
+          
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  
+          <a
+            href="javascript: mostraOculta('10912777','tabelaPartes1',2,'Adv')"
+          >
+            Mostrar/Ocultar
+          </a>
+          
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  
+          <a
+            href="javascript: mostraOculta('10912777','tabelaPartes1',2,'End')"
+          >
+            Mostrar/Ocultar
+          </a>
+          
+                
+        </td>
+        
+              
+      </tr>
+      
+            
+    </tbody>
+    
+          
+  </table>
+  
+
+          
+  <!-- Informações (paineis) ocultas que serão exibidas dinamicamente através de javascript -->
+  
+          
+  <!-- Informações de Advogado -->
+  
+
+          
+  <span
+    id="spanAdv10912776"
+    style="visibility: show; display: none"
+  >
+    
+            
+    <table
+      class="tabelaEndereco"
+      style="width: 100%"
+    >
+      
+              
+      <tbody>
+        
+                
+        <tr
+          class="tCinza"
+        >
+          
+                  
+          <td
+            class="topico"
+            width="93"
+          >
+            Advogado
+          </td>
+          
+                
+        </tr>
+        
+                
+        <tr>
+          
+                  
+          <td>
+            
+                    
+            <link
+              href="/projudi/estilo.css"
+              rel="stylesheet"
+              type="text/css"
+            />
+            
+                    
+            <script
+              src="/projudi/scripts/subModal/subModal.js"
+              type="text/javascript"
+            />
+            
+                    
+            <link
+              href="/projudi/scripts/subModal/subModal.css"
+              rel="stylesheet"
+              type="text/css"
+            />
+            
+                    
+            <script
+              src="/projudi/dwr/interface/AdvogadoService.js"
+              type="text/javascript"
+            />
+            
+
+                    
+            <script>
+              
+                      function chamaPop(codParteProcesso, codParteRecurso) {
+                        showPopWin(
+                          "/projudi/listagens/HistoricoAdvogado?codParteProcesso=" +
+                            codParteProcesso +
+                            "&codParteRecurso=" +
+                            codParteRecurso,
+                          1001,
+                          350,
+                          null,
+                          true
+                        );
+                      }
+                    
+            </script>
+            
+
+                    
+            <table
+              class="tabelaLista"
+              id="tabelaAdvogadoPartes1"
+              style="width: 100%"
+            >
+              
+                      
+              <tbody>
+                
+                        
+                <tr>
+                  
+                          
+                  <th>
+                    Nome
+                  </th>
+                  
+                          
+                  <th
+                    style="width: 120px"
+                  >
+                    OAB/MADEP
+                  </th>
+                  
+                          
+                  <!--&lt;th style="width:50px;"&gt;E-mail&lt;/th&gt;-->
+                  
+                        
+                </tr>
+                
+
+                        
+                <tr
+                  class="linhaClara"
+                >
+                  
+                          
+                  <td
+                    style="padding-left: 5px"
+                  >
+                    
+                            SILANETE ALENCAR SOUSA (CPF:062.578.333-61)
+                          
+                  </td>
+                  
+
+                          
+                  <td
+                    style="
+                              white-space: nowrap;
+                              text-align: center;
+                              width: 120px;
+                            "
+                  >
+                    
+                            65457N-BA
+                          
+                  </td>
+                  
+                        
+                </tr>
+                
+
+                        
+                <tr
+                  class="ultimaLinha"
+                >
+                  
+                          
+                  <td
+                    colspan="2"
+                  >
+                    
+                            
+                    <table>
+                      
+                              
+                      <tbody>
+                        
+                                
+                        <tr>
+                          
+                                  
+                          <td
+                            style="text-align: right; height: 15px"
+                          >
+                            
+                                    
+                            <a
+                              href="javascript:chamaPop('10912776','' );"
+                            >
+                              Histórico de Advogados
+                            </a>
+                            
+                                  
+                          </td>
+                          
+                                
+                        </tr>
+                        
+                              
+                      </tbody>
+                      
+                            
+                    </table>
+                    
+                          
+                  </td>
+                  
+                        
+                </tr>
+                
+                      
+              </tbody>
+              
+                    
+            </table>
+            
+                  
+          </td>
+          
+                
+        </tr>
+        
+              
+      </tbody>
+      
+            
+    </table>
+    
+          
+  </span>
+  
+
+          
+  <!-- Informações de Endereço -->
+  
+          
+  <span
+    id="spanEnd10912776"
+    style="visibility: hidden; display: none"
+  >
+    
+            
+    <table
+      class="tabelaEndereco"
+      style="width: 100%"
+    >
+      
+              
+      <tbody>
+        
+                
+        <tr
+          class="tCinza"
+        >
+          
+                  
+          <td
+            class="topico"
+            width="93"
+          >
+            Endereço
+          </td>
+          
+                
+        </tr>
+        
+                
+        <tr>
+          
+                  
+          <td>
+            
+                    RODOVIA BA 522 VIA COPEC , 12 , SANTO ANTONIO
+                    , CAMAÇARI  - BA  - BRASIL
+                    , 42805830
+
+                    
+            <br />
+            martinsaut_@hotmail.com , (Contato: 71 99284 1456)
+                  
+          </td>
+          
+                
+        </tr>
+        
+              
+      </tbody>
+      
+            
+    </table>
+    
+          
+  </span>
+  
+
+          
+  <span
+    id="spanAdv10912777"
+    style="visibility: show; display: none"
+  >
+    
+            
+    <table
+      class="tabelaEndereco"
+      style="width: 100%"
+    >
+      
+              
+      <tbody>
+        
+                
+        <tr
+          class="tCinza"
+        >
+          
+                  
+          <td
+            class="topico"
+            width="93"
+          >
+            Advogado
+          </td>
+          
+                
+        </tr>
+        
+                
+        <tr>
+          
+                  
+          <td>
+            
+                    
+            <link
+              href="/projudi/estilo.css"
+              rel="stylesheet"
+              type="text/css"
+            />
+            
+                    
+            <script
+              src="/projudi/scripts/subModal/subModal.js"
+              type="text/javascript"
+            />
+            
+                    
+            <link
+              href="/projudi/scripts/subModal/subModal.css"
+              rel="stylesheet"
+              type="text/css"
+            />
+            
+                    
+            <script
+              src="/projudi/dwr/interface/AdvogadoService.js"
+              type="text/javascript"
+            />
+            
+
+                    
+            <script>
+              
+                      function chamaPop(codParteProcesso, codParteRecurso) {
+                        showPopWin(
+                          "/projudi/listagens/HistoricoAdvogado?codParteProcesso=" +
+                            codParteProcesso +
+                            "&codParteRecurso=" +
+                            codParteRecurso,
+                          1001,
+                          350,
+                          null,
+                          true
+                        );
+                      }
+                    
+            </script>
+            
+
+                    
+            <table
+              class="tabelaLista"
+              id="tabelaAdvogadoPartes1"
+              style="width: 100%"
+            >
+              
+                      
+              <tbody>
+                
+                        
+                <tr>
+                  
+                          
+                  <th>
+                    Nome
+                  </th>
+                  
+                          
+                  <th
+                    style="width: 120px"
+                  >
+                    OAB/MADEP
+                  </th>
+                  
+                          
+                  <!--&lt;th style="width:50px;"&gt;E-mail&lt;/th&gt;-->
+                  
+                        
+                </tr>
+                
+
+                        
+                <tr
+                  class="linhaClara"
+                >
+                  
+                          
+                  <td
+                    style="padding-left: 5px"
+                  >
+                    
+                            SILANETE ALENCAR SOUSA (CPF:062.578.333-61)
+                          
+                  </td>
+                  
+
+                          
+                  <td
+                    style="
+                              white-space: nowrap;
+                              text-align: center;
+                              width: 120px;
+                            "
+                  >
+                    
+                            65457N-BA
+                          
+                  </td>
+                  
+                        
+                </tr>
+                
+
+                        
+                <tr
+                  class="ultimaLinha"
+                >
+                  
+                          
+                  <td
+                    colspan="2"
+                  >
+                    
+                            
+                    <table>
+                      
+                              
+                      <tbody>
+                        
+                                
+                        <tr>
+                          
+                                  
+                          <td
+                            style="text-align: right; height: 15px"
+                          >
+                            
+                                    
+                            <a
+                              href="javascript:chamaPop('10912777','' );"
+                            >
+                              Histórico de Advogados
+                            </a>
+                            
+                                  
+                          </td>
+                          
+                                
+                        </tr>
+                        
+                              
+                      </tbody>
+                      
+                            
+                    </table>
+                    
+                          
+                  </td>
+                  
+                        
+                </tr>
+                
+                      
+              </tbody>
+              
+                    
+            </table>
+            
+                  
+          </td>
+          
+                
+        </tr>
+        
+              
+      </tbody>
+      
+            
+    </table>
+    
+          
+  </span>
+  
+
+          
+  <!-- Informações de Endereço -->
+  
+          
+  <span
+    id="spanEnd10912777"
+    style="visibility: hidden; display: none"
+  >
+    
+            
+    <table
+      class="tabelaEndereco"
+      style="width: 100%"
+    >
+      
+              
+      <tbody>
+        
+                
+        <tr
+          class="tCinza"
+        >
+          
+                  
+          <td
+            class="topico"
+            width="93"
+          >
+            Endereço
+          </td>
+          
+                
+        </tr>
+        
+                
+        <tr>
+          
+                  
+          <td>
+            
+                    RODOVIA BA 522 VIA COPEC , 12 , SANTO ANTONIO
+                    , CAMAÇARI  - BA  - BRASIL
+                    , 42805830
+
+                    
+            <br />
+            martinsaut_@hotmail.com , (Contato: 11 996496392)
+                  
+          </td>
+          
+                
+        </tr>
+        
+              
+      </tbody>
+      
+            
+    </table>
+    
+          
+  </span>
+  
+        
+</td>
+`;
+
+exports[`ProjudiTjbaPartesScrapper should load 4 partes TD containers into the respective properties 2`] = `
+<td
+  id="td110912777"
+  style="padding-left: 5px"
+>
+  
+                  MARCIO INACIO MARTINS
+                
+</td>
+`;
+
+exports[`ProjudiTjbaPartesScrapper should load 4 partes TD containers into the respective properties 3`] = `
+<td
+  class="tCinza"
+  colspan="3"
+>
+  
+          
+  <script
+    src="/projudi/dwr/engine.js"
+  />
+  
+          
+  <script
+    src="/projudi/dwr/util.js"
+  />
+  
+          
+  <script
+    src="/projudi/dwr/interface/ParteService.js"
+    type="text/javascript"
+  />
+  
+
+          
+  <script>
+    
+            var codParteSelect = 0;
+            function obterQuantProcessoParte(codParte) {
+              codParteSelect = codParte;
+              ParteService.obterQuantidadeProcessoParte(
+                codParte,
+                exibeQuantProcessoParte
+              );
+              document.getElementById("div" + codParte).innerHTML =
+                '&lt;font color="#AA1C1C"&gt;Carregando ...&lt;/font&gt;';
+            }
+            function exibeQuantProcessoParte(valor) {
+              div = document.getElementById("div" + codParteSelect);
+              div.innerHTML =
+                '&lt;a href="/projudi/buscas/ProcessosParte?fm=post&codParte=' +
+                codParteSelect +
+                '&nome=""""&gt;(' +
+                valor +
+                " Processo(s) Distribuído(s))&lt;/a&gt;";
+            }
+
+            function mostraOculta(
+              idParteProcesso,
+              idTabela,
+              linhaCount,
+              tipoInfo
+            ) {
+              var titulo;
+              var conteudoHTML;
+              span = document.getElementById(
+                "span" + tipoInfo + idParteProcesso
+              );
+              trEndAdv = document.getElementById(
+                "tr" + tipoInfo + idParteProcesso
+              );
+              tr = document.getElementById("tr" + idParteProcesso);
+              td = document.getElementById("td" + idParteProcesso);
+              td1 = document.getElementById("td1" + idParteProcesso);
+              tabela = document.getElementById(idTabela);
+
+              if (trEndAdv == null) {
+                novotr = tabela.insertRow(tr.rowIndex + 1);
+                novotr.id = "tr" + tipoInfo + idParteProcesso;
+                if (linhaCount % 2 == 0) {
+                  novotr.className = "linhaEscura";
+                } else {
+                  novotr.className = "linhaClara";
+                }
+                novotd = novotr.insertCell(0);
+                novotd.innerHTML = span.innerHTML;
+
+                novotd.colSpan = 4;
+                td.rowSpan = td.rowSpan + 1;
+                td1.rowSpan = td1.rowSpan + 1;
+              } else {
+                td.rowSpan = td.rowSpan - 1;
+                td1.rowSpan = td1.rowSpan - 1;
+
+                tabela.deleteRow(trEndAdv.rowIndex);
+              }
+            }
+
+            function excluirParte(radioExcluirNome, tableExcluirNome) {
+              radioExcluirParte = document.getElementById(radioExcluirNome);
+              tableExcluirParte = document.getElementById(tableExcluirNome);
+
+              var itens = tableExcluirParte.getElementsByTagName("input");
+              var checked = false;
+
+              for (i = 0; i &lt; itens.length; i++) {
+                if (itens[i].type == "radio") {
+                  checked = itens[i].checked;
+                  if (itens[i].checked) break;
+                }
+              }
+
+              if (checked) {
+                if (
+                  confirm(
+                    "Tem certeza que deseja excluir do processo a parte selecionada?"
+                  )
+                )
+                  doPost(radioExcluirParte.name, null, 0);
+              } else {
+                alert("Selecione uma Parte para excluir.");
+              }
+            }
+          
+  </script>
+  
+
+          
+  <table
+    class="tabelaLista"
+    id="tabelaPartes2"
+    style="width: 100%"
+  >
+    
+            
+    <tbody>
+      
+              
+      <tr>
+        
+                
+        <th />
+        
+
+                
+        <th>
+          Nome
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Identidade
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          CPF
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Advogados
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Endereço
+        </th>
+        
+              
+      </tr>
+      
+            
+    </tbody>
+    
+          
+  </table>
+  
+
+          
+  <!-- Informações (paineis) ocultas que serão exibidas dinamicamente através de javascript -->
+  
+          
+  <!-- Informações de Advogado -->
+  
+        
+</td>
+`;
+
+exports[`ProjudiTjbaPartesScrapper should load 4 partes TD containers into the respective properties 4`] = `
+<td
+  class="tCinza"
+  colspan="3"
+>
+  
+          
+  <script
+    src="/projudi/dwr/engine.js"
+  />
+  
+          
+  <script
+    src="/projudi/dwr/util.js"
+  />
+  
+          
+  <script
+    src="/projudi/dwr/interface/ParteService.js"
+    type="text/javascript"
+  />
+  
+
+          
+  <script>
+    
+            var codParteSelect = 0;
+            function obterQuantProcessoParte(codParte) {
+              codParteSelect = codParte;
+              ParteService.obterQuantidadeProcessoParte(
+                codParte,
+                exibeQuantProcessoParte
+              );
+              document.getElementById("div" + codParte).innerHTML =
+                '&lt;font color="#AA1C1C"&gt;Carregando ...&lt;/font&gt;';
+            }
+            function exibeQuantProcessoParte(valor) {
+              div = document.getElementById("div" + codParteSelect);
+              div.innerHTML =
+                '&lt;a href="/projudi/buscas/ProcessosParte?fm=post&codParte=' +
+                codParteSelect +
+                '&nome=""""&gt;(' +
+                valor +
+                " Processo(s) Distribuído(s))&lt;/a&gt;";
+            }
+
+            function mostraOculta(
+              idParteProcesso,
+              idTabela,
+              linhaCount,
+              tipoInfo
+            ) {
+              var titulo;
+              var conteudoHTML;
+              span = document.getElementById(
+                "span" + tipoInfo + idParteProcesso
+              );
+              trEndAdv = document.getElementById(
+                "tr" + tipoInfo + idParteProcesso
+              );
+              tr = document.getElementById("tr" + idParteProcesso);
+              td = document.getElementById("td" + idParteProcesso);
+              td1 = document.getElementById("td1" + idParteProcesso);
+              tabela = document.getElementById(idTabela);
+
+              if (trEndAdv == null) {
+                novotr = tabela.insertRow(tr.rowIndex + 1);
+                novotr.id = "tr" + tipoInfo + idParteProcesso;
+                if (linhaCount % 2 == 0) {
+                  novotr.className = "linhaEscura";
+                } else {
+                  novotr.className = "linhaClara";
+                }
+                novotd = novotr.insertCell(0);
+                novotd.innerHTML = span.innerHTML;
+
+                novotd.colSpan = 4;
+                td.rowSpan = td.rowSpan + 1;
+                td1.rowSpan = td1.rowSpan + 1;
+              } else {
+                td.rowSpan = td.rowSpan - 1;
+                td1.rowSpan = td1.rowSpan - 1;
+
+                tabela.deleteRow(trEndAdv.rowIndex);
+              }
+            }
+
+            function excluirParte(radioExcluirNome, tableExcluirNome) {
+              radioExcluirParte = document.getElementById(radioExcluirNome);
+              tableExcluirParte = document.getElementById(tableExcluirNome);
+
+              var itens = tableExcluirParte.getElementsByTagName("input");
+              var checked = false;
+
+              for (i = 0; i &lt; itens.length; i++) {
+                if (itens[i].type == "radio") {
+                  checked = itens[i].checked;
+                  if (itens[i].checked) break;
+                }
+              }
+
+              if (checked) {
+                if (
+                  confirm(
+                    "Tem certeza que deseja excluir do processo a parte selecionada?"
+                  )
+                )
+                  doPost(radioExcluirParte.name, null, 0);
+              } else {
+                alert("Selecione uma Parte para excluir.");
+              }
+            }
+          
+  </script>
+  
+
+          
+  <table
+    class="tabelaLista"
+    id="tabelaPartes3"
+    style="width: 100%"
+  >
+    
+            
+    <tbody>
+      
+              
+      <tr>
+        
+                
+        <th />
+        
+
+                
+        <th>
+          Nome
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Identidade
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          CPF
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Advogados
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Endereço
+        </th>
+        
+              
+      </tr>
+      
+            
+    </tbody>
+    
+          
+  </table>
+  
+
+          
+  <!-- Informações (paineis) ocultas que serão exibidas dinamicamente através de javascript -->
+  
+          
+  <!-- Informações de Advogado -->
+  
+        
+</td>
+`;
+
+exports[`ProjudiTjbaPartesScrapper should return all partes from the provided polo processual container 1`] = `
+<td
+  class="tCinza"
+  colspan="3"
+>
+  
+          
+  <script
+    src="/projudi/dwr/engine.js"
+  />
+  
+          
+  <script
+    src="/projudi/dwr/util.js"
+  />
+  
+          
+  <script
+    src="/projudi/dwr/interface/ParteService.js"
+    type="text/javascript"
+  />
+  
+
+          
+  <script>
+    
+            var codParteSelect = 0;
+            function obterQuantProcessoParte(codParte) {
+              codParteSelect = codParte;
+              ParteService.obterQuantidadeProcessoParte(
+                codParte,
+                exibeQuantProcessoParte
+              );
+              document.getElementById("div" + codParte).innerHTML =
+                '&lt;font color="#AA1C1C"&gt;Carregando ...&lt;/font&gt;';
+            }
+            function exibeQuantProcessoParte(valor) {
+              div = document.getElementById("div" + codParteSelect);
+              div.innerHTML =
+                '&lt;a href="/projudi/buscas/ProcessosParte?fm=post&codParte=' +
+                codParteSelect +
+                '&nome=""""&gt;(' +
+                valor +
+                " Processo(s) Distribuído(s))&lt;/a&gt;";
+            }
+
+            function mostraOculta(
+              idParteProcesso,
+              idTabela,
+              linhaCount,
+              tipoInfo
+            ) {
+              var titulo;
+              var conteudoHTML;
+              span = document.getElementById(
+                "span" + tipoInfo + idParteProcesso
+              );
+              trEndAdv = document.getElementById(
+                "tr" + tipoInfo + idParteProcesso
+              );
+              tr = document.getElementById("tr" + idParteProcesso);
+              td = document.getElementById("td" + idParteProcesso);
+              td1 = document.getElementById("td1" + idParteProcesso);
+              tabela = document.getElementById(idTabela);
+
+              if (trEndAdv == null) {
+                novotr = tabela.insertRow(tr.rowIndex + 1);
+                novotr.id = "tr" + tipoInfo + idParteProcesso;
+                if (linhaCount % 2 == 0) {
+                  novotr.className = "linhaEscura";
+                } else {
+                  novotr.className = "linhaClara";
+                }
+                novotd = novotr.insertCell(0);
+                novotd.innerHTML = span.innerHTML;
+
+                novotd.colSpan = 4;
+                td.rowSpan = td.rowSpan + 1;
+                td1.rowSpan = td1.rowSpan + 1;
+              } else {
+                td.rowSpan = td.rowSpan - 1;
+                td1.rowSpan = td1.rowSpan - 1;
+
+                tabela.deleteRow(trEndAdv.rowIndex);
+              }
+            }
+
+            function excluirParte(radioExcluirNome, tableExcluirNome) {
+              radioExcluirParte = document.getElementById(radioExcluirNome);
+              tableExcluirParte = document.getElementById(tableExcluirNome);
+
+              var itens = tableExcluirParte.getElementsByTagName("input");
+              var checked = false;
+
+              for (i = 0; i &lt; itens.length; i++) {
+                if (itens[i].type == "radio") {
+                  checked = itens[i].checked;
+                  if (itens[i].checked) break;
+                }
+              }
+
+              if (checked) {
+                if (
+                  confirm(
+                    "Tem certeza que deseja excluir do processo a parte selecionada?"
+                  )
+                )
+                  doPost(radioExcluirParte.name, null, 0);
+              } else {
+                alert("Selecione uma Parte para excluir.");
+              }
+            }
+          
+  </script>
+  
+
+          
+  <table
+    class="tabelaLista"
+    id="tabelaPartes1"
+    style="width: 100%"
+  >
+    
+            
+    <tbody>
+      
+              
+      <tr>
+        
+                
+        <th />
+        
+
+                
+        <th>
+          Nome
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Identidade
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          CPF
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Advogados
+        </th>
+        
+                
+        <th
+          style="width: 120px"
+        >
+          Endereço
+        </th>
+        
+              
+      </tr>
+      
+
+              
+      <tr
+        class="linhaClara"
+        id="tr10912776"
+      >
+        
+                
+        <td
+          id="td10912776"
+          style="white-space: nowrap; text-align: center; width: 20px"
+        >
+          
+                  
+          <a
+            href="/projudi/listagens/DadosParte?codParte=3125187"
+          >
+            
+                    
+            <img
+              alt="Dados da Parte"
+              border="0"
+              onmouseout="this.src='/projudi/imagens/dadosParte.png'"
+              onmouseover="this.src='/projudi/imagens/dadosParte02.png'"
+              src="/projudi/imagens/dadosParte.png"
+            />
+            
+                  
+          </a>
+          
+                
+        </td>
+        
+
+                
+        <td
+          id="td110912776"
+          style="padding-left: 5px"
+        >
+          
+                  JUSSARA MENDONCA LYRA MARTINS
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        />
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  053.995.967-76
+                  
+          <script>
+            
+                    if (
+                      "053.995.967-76".indexOf("-") == -1 &&
+                      "053.995.967-76".indexOf("Não cadastrado") == -1
+                    ) {
+                      document.write(
+                        '&lt;br&gt;&lt;font color="red"&gt;&lt;b&gt;(Inválido!)&lt;/b&gt;&lt;/font&gt;'
+                      );
+                    }
+                  
+          </script>
+          
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  
+          <a
+            href="javascript: mostraOculta('10912776','tabelaPartes1',1,'Adv')"
+          >
+            Mostrar/Ocultar
+          </a>
+          
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  
+          <a
+            href="javascript: mostraOculta('10912776','tabelaPartes1',1,'End')"
+          >
+            Mostrar/Ocultar
+          </a>
+          
+                
+        </td>
+        
+              
+      </tr>
+      
+
+              
+      <tr
+        class="linhaEscura"
+        id="tr10912777"
+      >
+        
+                
+        <td
+          id="td10912777"
+          style="white-space: nowrap; text-align: center; width: 20px"
+        >
+          
+                  
+          <a
+            href="/projudi/listagens/DadosParte?codParte=3125188"
+          >
+            
+                    
+            <img
+              alt="Dados da Parte"
+              border="0"
+              onmouseout="this.src='/projudi/imagens/dadosParte.png'"
+              onmouseover="this.src='/projudi/imagens/dadosParte02.png'"
+              src="/projudi/imagens/dadosParte.png"
+            />
+            
+                  
+          </a>
+          
+                
+        </td>
+        
+
+                
+        <td
+          id="td110912777"
+          style="padding-left: 5px"
+        >
+          
+                  MARCIO INACIO MARTINS
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        />
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  949.499.488-49
+                  
+          <script>
+            
+                    if (
+                      "949.499.488-49".indexOf("-") == -1 &&
+                      "949.499.488-49".indexOf("Não cadastrado") == -1
+                    ) {
+                      document.write(
+                        '&lt;br&gt;&lt;font color="red"&gt;&lt;b&gt;(Inválido!)&lt;/b&gt;&lt;/font&gt;'
+                      );
+                    }
+                  
+          </script>
+          
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  
+          <a
+            href="javascript: mostraOculta('10912777','tabelaPartes1',2,'Adv')"
+          >
+            Mostrar/Ocultar
+          </a>
+          
+                
+        </td>
+        
+                
+        <td
+          style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+        >
+          
+                  
+          <a
+            href="javascript: mostraOculta('10912777','tabelaPartes1',2,'End')"
+          >
+            Mostrar/Ocultar
+          </a>
+          
+                
+        </td>
+        
+              
+      </tr>
+      
+            
+    </tbody>
+    
+          
+  </table>
+  
+
+          
+  <!-- Informações (paineis) ocultas que serão exibidas dinamicamente através de javascript -->
+  
+          
+  <!-- Informações de Advogado -->
+  
+
+          
+  <span
+    id="spanAdv10912776"
+    style="visibility: show; display: none"
+  >
+    
+            
+    <table
+      class="tabelaEndereco"
+      style="width: 100%"
+    >
+      
+              
+      <tbody>
+        
+                
+        <tr
+          class="tCinza"
+        >
+          
+                  
+          <td
+            class="topico"
+            width="93"
+          >
+            Advogado
+          </td>
+          
+                
+        </tr>
+        
+                
+        <tr>
+          
+                  
+          <td>
+            
+                    
+            <link
+              href="/projudi/estilo.css"
+              rel="stylesheet"
+              type="text/css"
+            />
+            
+                    
+            <script
+              src="/projudi/scripts/subModal/subModal.js"
+              type="text/javascript"
+            />
+            
+                    
+            <link
+              href="/projudi/scripts/subModal/subModal.css"
+              rel="stylesheet"
+              type="text/css"
+            />
+            
+                    
+            <script
+              src="/projudi/dwr/interface/AdvogadoService.js"
+              type="text/javascript"
+            />
+            
+
+                    
+            <script>
+              
+                      function chamaPop(codParteProcesso, codParteRecurso) {
+                        showPopWin(
+                          "/projudi/listagens/HistoricoAdvogado?codParteProcesso=" +
+                            codParteProcesso +
+                            "&codParteRecurso=" +
+                            codParteRecurso,
+                          1001,
+                          350,
+                          null,
+                          true
+                        );
+                      }
+                    
+            </script>
+            
+
+                    
+            <table
+              class="tabelaLista"
+              id="tabelaAdvogadoPartes1"
+              style="width: 100%"
+            >
+              
+                      
+              <tbody>
+                
+                        
+                <tr>
+                  
+                          
+                  <th>
+                    Nome
+                  </th>
+                  
+                          
+                  <th
+                    style="width: 120px"
+                  >
+                    OAB/MADEP
+                  </th>
+                  
+                          
+                  <!--&lt;th style="width:50px;"&gt;E-mail&lt;/th&gt;-->
+                  
+                        
+                </tr>
+                
+
+                        
+                <tr
+                  class="linhaClara"
+                >
+                  
+                          
+                  <td
+                    style="padding-left: 5px"
+                  >
+                    
+                            SILANETE ALENCAR SOUSA (CPF:062.578.333-61)
+                          
+                  </td>
+                  
+
+                          
+                  <td
+                    style="
+                              white-space: nowrap;
+                              text-align: center;
+                              width: 120px;
+                            "
+                  >
+                    
+                            65457N-BA
+                          
+                  </td>
+                  
+                        
+                </tr>
+                
+
+                        
+                <tr
+                  class="ultimaLinha"
+                >
+                  
+                          
+                  <td
+                    colspan="2"
+                  >
+                    
+                            
+                    <table>
+                      
+                              
+                      <tbody>
+                        
+                                
+                        <tr>
+                          
+                                  
+                          <td
+                            style="text-align: right; height: 15px"
+                          >
+                            
+                                    
+                            <a
+                              href="javascript:chamaPop('10912776','' );"
+                            >
+                              Histórico de Advogados
+                            </a>
+                            
+                                  
+                          </td>
+                          
+                                
+                        </tr>
+                        
+                              
+                      </tbody>
+                      
+                            
+                    </table>
+                    
+                          
+                  </td>
+                  
+                        
+                </tr>
+                
+                      
+              </tbody>
+              
+                    
+            </table>
+            
+                  
+          </td>
+          
+                
+        </tr>
+        
+              
+      </tbody>
+      
+            
+    </table>
+    
+          
+  </span>
+  
+
+          
+  <!-- Informações de Endereço -->
+  
+          
+  <span
+    id="spanEnd10912776"
+    style="visibility: hidden; display: none"
+  >
+    
+            
+    <table
+      class="tabelaEndereco"
+      style="width: 100%"
+    >
+      
+              
+      <tbody>
+        
+                
+        <tr
+          class="tCinza"
+        >
+          
+                  
+          <td
+            class="topico"
+            width="93"
+          >
+            Endereço
+          </td>
+          
+                
+        </tr>
+        
+                
+        <tr>
+          
+                  
+          <td>
+            
+                    RODOVIA BA 522 VIA COPEC , 12 , SANTO ANTONIO
+                    , CAMAÇARI  - BA  - BRASIL
+                    , 42805830
+
+                    
+            <br />
+            martinsaut_@hotmail.com , (Contato: 71 99284 1456)
+                  
+          </td>
+          
+                
+        </tr>
+        
+              
+      </tbody>
+      
+            
+    </table>
+    
+          
+  </span>
+  
+
+          
+  <span
+    id="spanAdv10912777"
+    style="visibility: show; display: none"
+  >
+    
+            
+    <table
+      class="tabelaEndereco"
+      style="width: 100%"
+    >
+      
+              
+      <tbody>
+        
+                
+        <tr
+          class="tCinza"
+        >
+          
+                  
+          <td
+            class="topico"
+            width="93"
+          >
+            Advogado
+          </td>
+          
+                
+        </tr>
+        
+                
+        <tr>
+          
+                  
+          <td>
+            
+                    
+            <link
+              href="/projudi/estilo.css"
+              rel="stylesheet"
+              type="text/css"
+            />
+            
+                    
+            <script
+              src="/projudi/scripts/subModal/subModal.js"
+              type="text/javascript"
+            />
+            
+                    
+            <link
+              href="/projudi/scripts/subModal/subModal.css"
+              rel="stylesheet"
+              type="text/css"
+            />
+            
+                    
+            <script
+              src="/projudi/dwr/interface/AdvogadoService.js"
+              type="text/javascript"
+            />
+            
+
+                    
+            <script>
+              
+                      function chamaPop(codParteProcesso, codParteRecurso) {
+                        showPopWin(
+                          "/projudi/listagens/HistoricoAdvogado?codParteProcesso=" +
+                            codParteProcesso +
+                            "&codParteRecurso=" +
+                            codParteRecurso,
+                          1001,
+                          350,
+                          null,
+                          true
+                        );
+                      }
+                    
+            </script>
+            
+
+                    
+            <table
+              class="tabelaLista"
+              id="tabelaAdvogadoPartes1"
+              style="width: 100%"
+            >
+              
+                      
+              <tbody>
+                
+                        
+                <tr>
+                  
+                          
+                  <th>
+                    Nome
+                  </th>
+                  
+                          
+                  <th
+                    style="width: 120px"
+                  >
+                    OAB/MADEP
+                  </th>
+                  
+                          
+                  <!--&lt;th style="width:50px;"&gt;E-mail&lt;/th&gt;-->
+                  
+                        
+                </tr>
+                
+
+                        
+                <tr
+                  class="linhaClara"
+                >
+                  
+                          
+                  <td
+                    style="padding-left: 5px"
+                  >
+                    
+                            SILANETE ALENCAR SOUSA (CPF:062.578.333-61)
+                          
+                  </td>
+                  
+
+                          
+                  <td
+                    style="
+                              white-space: nowrap;
+                              text-align: center;
+                              width: 120px;
+                            "
+                  >
+                    
+                            65457N-BA
+                          
+                  </td>
+                  
+                        
+                </tr>
+                
+
+                        
+                <tr
+                  class="ultimaLinha"
+                >
+                  
+                          
+                  <td
+                    colspan="2"
+                  >
+                    
+                            
+                    <table>
+                      
+                              
+                      <tbody>
+                        
+                                
+                        <tr>
+                          
+                                  
+                          <td
+                            style="text-align: right; height: 15px"
+                          >
+                            
+                                    
+                            <a
+                              href="javascript:chamaPop('10912777','' );"
+                            >
+                              Histórico de Advogados
+                            </a>
+                            
+                                  
+                          </td>
+                          
+                                
+                        </tr>
+                        
+                              
+                      </tbody>
+                      
+                            
+                    </table>
+                    
+                          
+                  </td>
+                  
+                        
+                </tr>
+                
+                      
+              </tbody>
+              
+                    
+            </table>
+            
+                  
+          </td>
+          
+                
+        </tr>
+        
+              
+      </tbody>
+      
+            
+    </table>
+    
+          
+  </span>
+  
+
+          
+  <!-- Informações de Endereço -->
+  
+          
+  <span
+    id="spanEnd10912777"
+    style="visibility: hidden; display: none"
+  >
+    
+            
+    <table
+      class="tabelaEndereco"
+      style="width: 100%"
+    >
+      
+              
+      <tbody>
+        
+                
+        <tr
+          class="tCinza"
+        >
+          
+                  
+          <td
+            class="topico"
+            width="93"
+          >
+            Endereço
+          </td>
+          
+                
+        </tr>
+        
+                
+        <tr>
+          
+                  
+          <td>
+            
+                    RODOVIA BA 522 VIA COPEC , 12 , SANTO ANTONIO
+                    , CAMAÇARI  - BA  - BRASIL
+                    , 42805830
+
+                    
+            <br />
+            martinsaut_@hotmail.com , (Contato: 11 996496392)
+                  
+          </td>
+          
+                
+        </tr>
+        
+              
+      </tbody>
+      
+            
+    </table>
+    
+          
+  </span>
+  
+        
+</td>
+`;

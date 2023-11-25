@@ -1,0 +1,3024 @@
+<script language="JavaScript1.2" src="/projudi/imagens/tips.js"></script>
+<script
+  language="JavaScript1.2"
+  src="/projudi/imagens/ajudas/ajudas.js"
+></script>
+<div
+  id="TipLayer"
+  style="visibility: hidden; position: absolute; z-index: 1000; top: -100"
+></div>
+
+<script language="JavaScript1.2">
+  <!--
+  function DoPrinting() {
+    if (!window.print) {
+      alert(
+        "Use o Netscape  ou Internet Explorer \n nas versões 4.0 ou superior!"
+      );
+      return;
+    }
+    window.print();
+  }
+  //-->
+</script>
+<script
+  type="text/javascript"
+  src="/projudi/scripts/subModal/subModal.js"
+></script>
+<link
+  href="/projudi/scripts/subModal/subModal.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<script>
+  <!--
+  initPopUp();
+  function chamaPopHist(numProcesso) {
+    showPopWin(
+      "/projudi/listagens/HistoricoJuiz?numeroProcesso=" + numProcesso,
+      1024,
+      350,
+      null,
+      true
+    );
+  }
+
+  function chamaPopHistAcesso(numProcesso) {
+    showPopWin(
+      "/projudi/listagens/HistoricoAcessoTerceiro?numeroProcesso=" +
+        numProcesso,
+      780,
+      350,
+      null,
+      true
+    );
+  }
+
+  function chamaDownloadProcesso(numProcesso) {
+    if (
+      window.confirm(
+        "O download do processo pode levar alguns minutos. Deseja continuar?"
+      )
+    )
+      window.location =
+        "/projudi/acoes/DownloadProcesso?numeroProcesso=" + numProcesso;
+  }
+
+  function chamaResumoProcesso(numProcesso) {
+    window.open(
+      "/projudi/listagens/ResumoProcesso?numeroProcesso=" + numProcesso
+    );
+  }
+
+  function chamaRelatorioAtosProcesso(numProcesso, codRelatorio) {
+    showPopWin(
+      "/projudi/listagens/DadosRelatorio?numeroProcesso=" +
+        numProcesso +
+        "&codRelatorio=" +
+        codRelatorio +
+        "&filtro=true",
+      580,
+      200,
+      null,
+      true
+    );
+  }
+
+  function chamaPopLotacaoAudiencia(numProcesso) {
+    showPopWin(
+      "/projudi/VerLotacaoAudiencia?numeroProcesso=" + numProcesso,
+      600,
+      250,
+      null,
+      true
+    );
+  }
+  //-->
+</script>
+<div id="popupMask"></div>
+<div id="popupContainer">
+  <div id="popupInner">
+    <div id="popupTitleBar">
+      <div id="popupTitle"></div>
+      <div id="popupControls">
+        <img
+          src="/projudi/scripts/subModal/close.gif"
+          onclick="hidePopWin(false);"
+          id="popCloseBox"
+        />
+      </div>
+    </div>
+    <iframe
+      src="/projudi/scripts/subModal/carregando.html"
+      style="width: 100%; height: 100%; background-color: transparent"
+      scrolling="auto"
+      frameborder="0"
+      allowtransparency="true"
+      id="popupFrame"
+      name="popupFrame"
+      width="100%"
+      height="100%"
+    ></iframe>
+  </div>
+</div>
+
+<link href="/projudi/estilo.css" rel="stylesheet" type="text/css" />
+<link href="../../../estilo.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+  .style9 {
+    color: #990000;
+    font-size: 12px;
+    font-weight: bold;
+  }
+</style>
+
+<p align="center" class="tituloPagina">DADOS DO PROCESSO</p>
+<b>
+  <link href="/projudi/estilo.css" rel="stylesheet" type="text/css" />
+</b>
+<script src="/projudi/imagens/MostraOculta.js"></script>
+
+<div id="Partes">
+  <table width="98%" align="center" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr class="primeiraLinha">
+        <td colspan="4" valign="middle">
+          <b
+            >&nbsp;<font size="4"
+              >Processo nº
+              <a
+                href="/projudi/listagens/DadosProcesso?numeroProcesso=7020234449380"
+                class="style2"
+                >0015607-18.2023.8.05.0039</a
+              >
+              ( 2 dias em tramitação )</font
+            > </b
+          >&nbsp;
+
+          <a
+            href="http://www5.tjba.jus.br/juizadosespeciais/images/pdf/ATO_NORMATIVO_N_07_2022.pdf"
+            target="_blank"
+            title="Ver Regulamentação vigente"
+          >
+            <img
+              src="/projudi/imagens/logo-juizo-100-digital-positiva.png"
+              height="25px"
+              style="vertical-align: bottom" /></a
+          >&nbsp;
+        </td>
+      </tr>
+
+      <tr>
+        <td nowrap="" class="tBranca">
+          <div align="center"><strong>Promovente</strong></div>
+        </td>
+
+        <td colspan="3" class="tCinza">
+          <script src="/projudi/dwr/engine.js"></script>
+          <script src="/projudi/dwr/util.js"></script>
+          <script
+            type="text/javascript"
+            src="/projudi/dwr/interface/ParteService.js"
+          ></script>
+
+          <script>
+            var codParteSelect = 0;
+            function obterQuantProcessoParte(codParte) {
+              codParteSelect = codParte;
+              ParteService.obterQuantidadeProcessoParte(
+                codParte,
+                exibeQuantProcessoParte
+              );
+              document.getElementById("div" + codParte).innerHTML =
+                '<font color="#AA1C1C">Carregando ...</font>';
+            }
+            function exibeQuantProcessoParte(valor) {
+              div = document.getElementById("div" + codParteSelect);
+              div.innerHTML =
+                '<a href="/projudi/buscas/ProcessosParte?fm=post&codParte=' +
+                codParteSelect +
+                '&nome="""">(' +
+                valor +
+                " Processo(s) Distribuído(s))</a>";
+            }
+
+            function mostraOculta(
+              idParteProcesso,
+              idTabela,
+              linhaCount,
+              tipoInfo
+            ) {
+              var titulo;
+              var conteudoHTML;
+              span = document.getElementById(
+                "span" + tipoInfo + idParteProcesso
+              );
+              trEndAdv = document.getElementById(
+                "tr" + tipoInfo + idParteProcesso
+              );
+              tr = document.getElementById("tr" + idParteProcesso);
+              td = document.getElementById("td" + idParteProcesso);
+              td1 = document.getElementById("td1" + idParteProcesso);
+              tabela = document.getElementById(idTabela);
+
+              if (trEndAdv == null) {
+                novotr = tabela.insertRow(tr.rowIndex + 1);
+                novotr.id = "tr" + tipoInfo + idParteProcesso;
+                if (linhaCount % 2 == 0) {
+                  novotr.className = "linhaEscura";
+                } else {
+                  novotr.className = "linhaClara";
+                }
+                novotd = novotr.insertCell(0);
+                novotd.innerHTML = span.innerHTML;
+
+                novotd.colSpan = 4;
+                td.rowSpan = td.rowSpan + 1;
+                td1.rowSpan = td1.rowSpan + 1;
+              } else {
+                td.rowSpan = td.rowSpan - 1;
+                td1.rowSpan = td1.rowSpan - 1;
+
+                tabela.deleteRow(trEndAdv.rowIndex);
+              }
+            }
+
+            function excluirParte(radioExcluirNome, tableExcluirNome) {
+              radioExcluirParte = document.getElementById(radioExcluirNome);
+              tableExcluirParte = document.getElementById(tableExcluirNome);
+
+              var itens = tableExcluirParte.getElementsByTagName("input");
+              var checked = false;
+
+              for (i = 0; i < itens.length; i++) {
+                if (itens[i].type == "radio") {
+                  checked = itens[i].checked;
+                  if (itens[i].checked) break;
+                }
+              }
+
+              if (checked) {
+                if (
+                  confirm(
+                    "Tem certeza que deseja excluir do processo a parte selecionada?"
+                  )
+                )
+                  doPost(radioExcluirParte.name, null, 0);
+              } else {
+                alert("Selecione uma Parte para excluir.");
+              }
+            }
+          </script>
+
+          <table style="width: 100%" class="tabelaLista" id="tabelaPartes1">
+            <tbody>
+              <tr>
+                <th></th>
+
+                <th>Nome</th>
+                <th style="width: 120px">Identidade</th>
+                <th style="width: 120px">CPF</th>
+                <th style="width: 120px">Advogados</th>
+                <th style="width: 120px">Endereço</th>
+              </tr>
+
+              <tr id="tr10912776" class="linhaClara">
+                <td
+                  id="td10912776"
+                  style="white-space: nowrap; text-align: center; width: 20px"
+                >
+                  <a href="/projudi/listagens/DadosParte?codParte=3125187">
+                    <img
+                      border="0"
+                      src="/projudi/imagens/dadosParte.png"
+                      alt="Dados da Parte"
+                      onmouseover="this.src='/projudi/imagens/dadosParte02.png'"
+                      onmouseout="this.src='/projudi/imagens/dadosParte.png'"
+                    />
+                  </a>
+                </td>
+
+                <td id="td110912776" style="padding-left: 5px">
+                  JUSSARA MENDONCA LYRA MARTINS
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                ></td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  053.995.967-76
+                  <script>
+                    if (
+                      "053.995.967-76".indexOf("-") == -1 &&
+                      "053.995.967-76".indexOf("Não cadastrado") == -1
+                    ) {
+                      document.write(
+                        '<br><font color="red"><b>(Inválido!)</b></font>'
+                      );
+                    }
+                  </script>
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  <a
+                    href="javascript: mostraOculta('10912776','tabelaPartes1',1,'Adv')"
+                    >Mostrar/Ocultar</a
+                  >
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  <a
+                    href="javascript: mostraOculta('10912776','tabelaPartes1',1,'End')"
+                    >Mostrar/Ocultar</a
+                  >
+                </td>
+              </tr>
+
+              <tr id="tr10912777" class="linhaEscura">
+                <td
+                  id="td10912777"
+                  style="white-space: nowrap; text-align: center; width: 20px"
+                >
+                  <a href="/projudi/listagens/DadosParte?codParte=3125188">
+                    <img
+                      border="0"
+                      src="/projudi/imagens/dadosParte.png"
+                      alt="Dados da Parte"
+                      onmouseover="this.src='/projudi/imagens/dadosParte02.png'"
+                      onmouseout="this.src='/projudi/imagens/dadosParte.png'"
+                    />
+                  </a>
+                </td>
+
+                <td id="td110912777" style="padding-left: 5px">
+                  MARCIO INACIO MARTINS
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                ></td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  949.499.488-49
+                  <script>
+                    if (
+                      "949.499.488-49".indexOf("-") == -1 &&
+                      "949.499.488-49".indexOf("Não cadastrado") == -1
+                    ) {
+                      document.write(
+                        '<br><font color="red"><b>(Inválido!)</b></font>'
+                      );
+                    }
+                  </script>
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  <a
+                    href="javascript: mostraOculta('10912777','tabelaPartes1',2,'Adv')"
+                    >Mostrar/Ocultar</a
+                  >
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  <a
+                    href="javascript: mostraOculta('10912777','tabelaPartes1',2,'End')"
+                    >Mostrar/Ocultar</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Informações (paineis) ocultas que serão exibidas dinamicamente através de javascript -->
+          <!-- Informações de Advogado -->
+
+          <span id="spanAdv10912776" style="visibility: show; display: none">
+            <table class="tabelaEndereco" style="width: 100%">
+              <tbody>
+                <tr class="tCinza">
+                  <td width="93" class="topico">Advogado</td>
+                </tr>
+                <tr>
+                  <td>
+                    <link
+                      href="/projudi/estilo.css"
+                      rel="stylesheet"
+                      type="text/css"
+                    />
+                    <script
+                      type="text/javascript"
+                      src="/projudi/scripts/subModal/subModal.js"
+                    ></script>
+                    <link
+                      href="/projudi/scripts/subModal/subModal.css"
+                      rel="stylesheet"
+                      type="text/css"
+                    />
+                    <script
+                      type="text/javascript"
+                      src="/projudi/dwr/interface/AdvogadoService.js"
+                    ></script>
+
+                    <script>
+                      function chamaPop(codParteProcesso, codParteRecurso) {
+                        showPopWin(
+                          "/projudi/listagens/HistoricoAdvogado?codParteProcesso=" +
+                            codParteProcesso +
+                            "&codParteRecurso=" +
+                            codParteRecurso,
+                          1001,
+                          350,
+                          null,
+                          true
+                        );
+                      }
+                    </script>
+
+                    <table
+                      style="width: 100%"
+                      class="tabelaLista"
+                      id="tabelaAdvogadoPartes1"
+                    >
+                      <tbody>
+                        <tr>
+                          <th>Nome</th>
+                          <th style="width: 120px">OAB/MADEP</th>
+                          <!--<th style="width:50px;">E-mail</th>-->
+                        </tr>
+
+                        <tr class="linhaClara">
+                          <td style="padding-left: 5px">
+                            SILANETE ALENCAR SOUSA (CPF:062.578.333-61)
+                          </td>
+
+                          <td
+                            style="
+                              white-space: nowrap;
+                              text-align: center;
+                              width: 120px;
+                            "
+                          >
+                            65457N-BA
+                          </td>
+                        </tr>
+
+                        <tr class="ultimaLinha">
+                          <td colspan="2">
+                            <table>
+                              <tbody>
+                                <tr>
+                                  <td style="text-align: right; height: 15px">
+                                    <a
+                                      href="javascript:chamaPop('10912776','' );"
+                                      >Histórico de Advogados</a
+                                    >
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+
+          <!-- Informações de Endereço -->
+          <span
+            id="spanEnd10912776"
+            style="visibility: hidden; display: none"
+          >
+            <table class="tabelaEndereco" style="width: 100%">
+              <tbody>
+                <tr class="tCinza">
+                  <td width="93" class="topico">Endereço</td>
+                </tr>
+                <tr>
+                  <td>
+                    RODOVIA BA 522 VIA COPEC ,&nbsp;12 ,&nbsp;SANTO ANTONIO
+                    ,&nbsp;CAMAÇARI &nbsp;-&nbsp;BA &nbsp;-&nbsp;BRASIL
+                    ,&nbsp;42805830
+
+                    <br />martinsaut_@hotmail.com , (Contato: 71 99284 1456)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+
+          <span id="spanAdv10912777" style="visibility: show; display: none">
+            <table class="tabelaEndereco" style="width: 100%">
+              <tbody>
+                <tr class="tCinza">
+                  <td width="93" class="topico">Advogado</td>
+                </tr>
+                <tr>
+                  <td>
+                    <link
+                      href="/projudi/estilo.css"
+                      rel="stylesheet"
+                      type="text/css"
+                    />
+                    <script
+                      type="text/javascript"
+                      src="/projudi/scripts/subModal/subModal.js"
+                    ></script>
+                    <link
+                      href="/projudi/scripts/subModal/subModal.css"
+                      rel="stylesheet"
+                      type="text/css"
+                    />
+                    <script
+                      type="text/javascript"
+                      src="/projudi/dwr/interface/AdvogadoService.js"
+                    ></script>
+
+                    <script>
+                      function chamaPop(codParteProcesso, codParteRecurso) {
+                        showPopWin(
+                          "/projudi/listagens/HistoricoAdvogado?codParteProcesso=" +
+                            codParteProcesso +
+                            "&codParteRecurso=" +
+                            codParteRecurso,
+                          1001,
+                          350,
+                          null,
+                          true
+                        );
+                      }
+                    </script>
+
+                    <table
+                      style="width: 100%"
+                      class="tabelaLista"
+                      id="tabelaAdvogadoPartes1"
+                    >
+                      <tbody>
+                        <tr>
+                          <th>Nome</th>
+                          <th style="width: 120px">OAB/MADEP</th>
+                          <!--<th style="width:50px;">E-mail</th>-->
+                        </tr>
+
+                        <tr class="linhaClara">
+                          <td style="padding-left: 5px">
+                            SILANETE ALENCAR SOUSA (CPF:062.578.333-61)
+                          </td>
+
+                          <td
+                            style="
+                              white-space: nowrap;
+                              text-align: center;
+                              width: 120px;
+                            "
+                          >
+                            65457N-BA
+                          </td>
+                        </tr>
+
+                        <tr class="ultimaLinha">
+                          <td colspan="2">
+                            <table>
+                              <tbody>
+                                <tr>
+                                  <td style="text-align: right; height: 15px">
+                                    <a
+                                      href="javascript:chamaPop('10912777','' );"
+                                      >Histórico de Advogados</a
+                                    >
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+
+          <!-- Informações de Endereço -->
+          <span
+            id="spanEnd10912777"
+            style="visibility: hidden; display: none"
+          >
+            <table class="tabelaEndereco" style="width: 100%">
+              <tbody>
+                <tr class="tCinza">
+                  <td width="93" class="topico">Endereço</td>
+                </tr>
+                <tr>
+                  <td>
+                    RODOVIA BA 522 VIA COPEC ,&nbsp;12 ,&nbsp;SANTO ANTONIO
+                    ,&nbsp;CAMAÇARI &nbsp;-&nbsp;BA &nbsp;-&nbsp;BRASIL
+                    ,&nbsp;42805830
+
+                    <br />martinsaut_@hotmail.com , (Contato: 11 996496392)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+        </td>
+      </tr>
+
+      <tr>
+        <td nowrap="" class="tCinza">
+          <div align="center"><strong>Promovido</strong></div>
+        </td>
+
+        <td colspan="3" class="tCinza">
+          <script src="/projudi/dwr/engine.js"></script>
+          <script src="/projudi/dwr/util.js"></script>
+          <script
+            type="text/javascript"
+            src="/projudi/dwr/interface/ParteService.js"
+          ></script>
+
+          <script>
+            var codParteSelect = 0;
+            function obterQuantProcessoParte(codParte) {
+              codParteSelect = codParte;
+              ParteService.obterQuantidadeProcessoParte(
+                codParte,
+                exibeQuantProcessoParte
+              );
+              document.getElementById("div" + codParte).innerHTML =
+                '<font color="#AA1C1C">Carregando ...</font>';
+            }
+            function exibeQuantProcessoParte(valor) {
+              div = document.getElementById("div" + codParteSelect);
+              div.innerHTML =
+                '<a href="/projudi/buscas/ProcessosParte?fm=post&codParte=' +
+                codParteSelect +
+                '&nome="""">(' +
+                valor +
+                " Processo(s) Distribuído(s))</a>";
+            }
+
+            function mostraOculta(
+              idParteProcesso,
+              idTabela,
+              linhaCount,
+              tipoInfo
+            ) {
+              var titulo;
+              var conteudoHTML;
+              span = document.getElementById(
+                "span" + tipoInfo + idParteProcesso
+              );
+              trEndAdv = document.getElementById(
+                "tr" + tipoInfo + idParteProcesso
+              );
+              tr = document.getElementById("tr" + idParteProcesso);
+              td = document.getElementById("td" + idParteProcesso);
+              td1 = document.getElementById("td1" + idParteProcesso);
+              tabela = document.getElementById(idTabela);
+
+              if (trEndAdv == null) {
+                novotr = tabela.insertRow(tr.rowIndex + 1);
+                novotr.id = "tr" + tipoInfo + idParteProcesso;
+                if (linhaCount % 2 == 0) {
+                  novotr.className = "linhaEscura";
+                } else {
+                  novotr.className = "linhaClara";
+                }
+                novotd = novotr.insertCell(0);
+                novotd.innerHTML = span.innerHTML;
+
+                novotd.colSpan = 4;
+                td.rowSpan = td.rowSpan + 1;
+                td1.rowSpan = td1.rowSpan + 1;
+              } else {
+                td.rowSpan = td.rowSpan - 1;
+                td1.rowSpan = td1.rowSpan - 1;
+
+                tabela.deleteRow(trEndAdv.rowIndex);
+              }
+            }
+
+            function excluirParte(radioExcluirNome, tableExcluirNome) {
+              radioExcluirParte = document.getElementById(radioExcluirNome);
+              tableExcluirParte = document.getElementById(tableExcluirNome);
+
+              var itens = tableExcluirParte.getElementsByTagName("input");
+              var checked = false;
+
+              for (i = 0; i < itens.length; i++) {
+                if (itens[i].type == "radio") {
+                  checked = itens[i].checked;
+                  if (itens[i].checked) break;
+                }
+              }
+
+              if (checked) {
+                if (
+                  confirm(
+                    "Tem certeza que deseja excluir do processo a parte selecionada?"
+                  )
+                )
+                  doPost(radioExcluirParte.name, null, 0);
+              } else {
+                alert("Selecione uma Parte para excluir.");
+              }
+            }
+          </script>
+
+          <table style="width: 100%" class="tabelaLista" id="tabelaPartes0">
+            <tbody>
+              <tr>
+                <th></th>
+
+                <th>Nome</th>
+                <th style="width: 120px">Identidade</th>
+                <th style="width: 120px">CPF</th>
+                <th style="width: 120px">Advogados</th>
+                <th style="width: 120px">Endereço</th>
+              </tr>
+
+              <tr id="tr10912774" class="linhaClara">
+                <td
+                  id="td10912774"
+                  style="white-space: nowrap; text-align: center; width: 20px"
+                >
+                  <a href="/projudi/listagens/DadosParte?codParte=1389080">
+                    <img
+                      border="0"
+                      src="/projudi/imagens/dadosParte.png"
+                      alt="Dados da Parte"
+                      onmouseover="this.src='/projudi/imagens/dadosParte02.png'"
+                      onmouseout="this.src='/projudi/imagens/dadosParte.png'"
+                    />
+                  </a>
+                </td>
+
+                <td id="td110912774" style="padding-left: 5px">
+                  COLMACARI EMPREENDIMENTOS IMOBILIARIOS LTDA
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                ></td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  20.069.863/0001-22
+                  <script>
+                    if (
+                      "20.069.863/0001-22".indexOf("-") == -1 &&
+                      "20.069.863/0001-22".indexOf("Não cadastrado") == -1
+                    ) {
+                      document.write(
+                        '<br><font color="red"><b>(Inválido!)</b></font>'
+                      );
+                    }
+                  </script>
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  <a
+                    href="javascript: mostraOculta('10912774','tabelaPartes0',1,'Adv')"
+                    >Mostrar/Ocultar</a
+                  >
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  <a
+                    href="javascript: mostraOculta('10912774','tabelaPartes0',1,'End')"
+                    >Mostrar/Ocultar</a
+                  >
+                </td>
+              </tr>
+
+              <tr id="tr10912775" class="linhaEscura">
+                <td
+                  id="td10912775"
+                  style="white-space: nowrap; text-align: center; width: 20px"
+                >
+                  <a href="/projudi/listagens/DadosParte?codParte=68">
+                    <img
+                      border="0"
+                      src="/projudi/imagens/dadosParte.png"
+                      alt="Dados da Parte"
+                      onmouseover="this.src='/projudi/imagens/dadosParte02.png'"
+                      onmouseout="this.src='/projudi/imagens/dadosParte.png'"
+                    />
+                  </a>
+                </td>
+
+                <td id="td110912775" style="padding-left: 5px">
+                  EMPRESA BAIANA DE AGUAS E SANEAMENTO SA
+
+                  <img
+                    border="0"
+                    title="Parte credenciada para recebimento de citação/intimação eletrônica"
+                    src="/projudi/imagens/envelope.jpg"
+                  />
+
+                  <img
+                    border="0"
+                    title="Parte credenciada para participar da Negociação Virtual"
+                    src="/projudi/imagens/icon/negociacao_mao.gif"
+                  />
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                ></td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  13.504.675/0001-10
+                  <script>
+                    if (
+                      "13.504.675/0001-10".indexOf("-") == -1 &&
+                      "13.504.675/0001-10".indexOf("Não cadastrado") == -1
+                    ) {
+                      document.write(
+                        '<br><font color="red"><b>(Inválido!)</b></font>'
+                      );
+                    }
+                  </script>
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  <a
+                    href="javascript: mostraOculta('10912775','tabelaPartes0',2,'Adv')"
+                    >Mostrar/Ocultar</a
+                  >
+                </td>
+                <td
+                  style="
+                    white-space: nowrap;
+                    text-align: center;
+                    width: 120px;
+                  "
+                >
+                  <a
+                    href="javascript: mostraOculta('10912775','tabelaPartes0',2,'End')"
+                    >Mostrar/Ocultar</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Informações (paineis) ocultas que serão exibidas dinamicamente através de javascript -->
+          <!-- Informações de Advogado -->
+
+          <span id="spanAdv10912774" style="visibility: show; display: none">
+            <table class="tabelaEndereco" style="width: 100%">
+              <tbody>
+                <tr class="tCinza">
+                  <td width="93" class="topico">Advogado</td>
+                </tr>
+                <tr>
+                  <td>
+                    <link
+                      href="/projudi/estilo.css"
+                      rel="stylesheet"
+                      type="text/css"
+                    />
+                    <script
+                      type="text/javascript"
+                      src="/projudi/scripts/subModal/subModal.js"
+                    ></script>
+                    <link
+                      href="/projudi/scripts/subModal/subModal.css"
+                      rel="stylesheet"
+                      type="text/css"
+                    />
+                    <script
+                      type="text/javascript"
+                      src="/projudi/dwr/interface/AdvogadoService.js"
+                    ></script>
+
+                    <script>
+                      function chamaPop(codParteProcesso, codParteRecurso) {
+                        showPopWin(
+                          "/projudi/listagens/HistoricoAdvogado?codParteProcesso=" +
+                            codParteProcesso +
+                            "&codParteRecurso=" +
+                            codParteRecurso,
+                          1001,
+                          350,
+                          null,
+                          true
+                        );
+                      }
+                    </script>
+
+                    <table
+                      style="width: 100%"
+                      class="tabelaLista"
+                      id="tabelaAdvogadoPartes0"
+                    >
+                      <tbody>
+                        <tr>
+                          <td style="padding-left: 5px">
+                            Nenhum advogado cadastrado.
+                          </td>
+                        </tr>
+
+                        <tr class="ultimaLinha">
+                          <td colspan="2">
+                            <table>
+                              <tbody>
+                                <tr>
+                                  <td style="text-align: right; height: 15px">
+                                    <a
+                                      href="javascript:chamaPop('10912774','' );"
+                                      >Histórico de Advogados</a
+                                    >
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+
+          <!-- Informações de Endereço -->
+          <span
+            id="spanEnd10912774"
+            style="visibility: hidden; display: none"
+          >
+            <table class="tabelaEndereco" style="width: 100%">
+              <tbody>
+                <tr class="tCinza">
+                  <td width="93" class="topico">Endereço</td>
+                </tr>
+                <tr>
+                  <td>
+                    AVENIDA JORGE AMADO ,&nbsp;54 ,&nbsp;LOJA 54 ,&nbsp;NOVA
+                    VITORIA ,&nbsp;CAMAÇARI &nbsp;-&nbsp;BA
+                    &nbsp;-&nbsp;BRASIL ,&nbsp;42802373 , (Contato: 81 2128)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+
+          <span id="spanAdv10912775" style="visibility: show; display: none">
+            <table class="tabelaEndereco" style="width: 100%">
+              <tbody>
+                <tr class="tCinza">
+                  <td width="93" class="topico">Advogado</td>
+                </tr>
+                <tr>
+                  <td>
+                    <link
+                      href="/projudi/estilo.css"
+                      rel="stylesheet"
+                      type="text/css"
+                    />
+                    <script
+                      type="text/javascript"
+                      src="/projudi/scripts/subModal/subModal.js"
+                    ></script>
+                    <link
+                      href="/projudi/scripts/subModal/subModal.css"
+                      rel="stylesheet"
+                      type="text/css"
+                    />
+                    <script
+                      type="text/javascript"
+                      src="/projudi/dwr/interface/AdvogadoService.js"
+                    ></script>
+
+                    <script>
+                      function chamaPop(codParteProcesso, codParteRecurso) {
+                        showPopWin(
+                          "/projudi/listagens/HistoricoAdvogado?codParteProcesso=" +
+                            codParteProcesso +
+                            "&codParteRecurso=" +
+                            codParteRecurso,
+                          1001,
+                          350,
+                          null,
+                          true
+                        );
+                      }
+                    </script>
+
+                    <table
+                      style="width: 100%"
+                      class="tabelaLista"
+                      id="tabelaAdvogadoPartes0"
+                    >
+                      <tbody>
+                        <tr>
+                          <td style="padding-left: 5px">
+                            Nenhum advogado cadastrado.
+                          </td>
+                        </tr>
+
+                        <tr class="ultimaLinha">
+                          <td colspan="2">
+                            <table>
+                              <tbody>
+                                <tr>
+                                  <td style="text-align: right; height: 15px">
+                                    <a
+                                      href="javascript:chamaPop('10912775','' );"
+                                      >Histórico de Advogados</a
+                                    >
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+
+          <!-- Informações de Endereço -->
+          <span
+            id="spanEnd10912775"
+            style="visibility: hidden; display: none"
+          >
+            <table class="tabelaEndereco" style="width: 100%">
+              <tbody>
+                <tr class="tCinza">
+                  <td width="93" class="topico">Endereço</td>
+                </tr>
+                <tr>
+                  <td>
+                    Rua Tenente Fernando Tuy ,&nbsp;sn ,&nbsp;Ponto Certo
+                    ,&nbsp;CAMAÇARI &nbsp;-&nbsp;BA &nbsp;-&nbsp;BRASIL
+                    ,&nbsp;42800161
+
+                    <br />fft@embasa.ba.gov.br , (Contato: 7133724779)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+        </td>
+      </tr>
+
+      <tr>
+        <td nowrap="" class="tBranca">
+          <div align="center"><strong>Testemunha</strong></div>
+        </td>
+
+        <td colspan="3" class="tCinza">
+          <script src="/projudi/dwr/engine.js"></script>
+          <script src="/projudi/dwr/util.js"></script>
+          <script
+            type="text/javascript"
+            src="/projudi/dwr/interface/ParteService.js"
+          ></script>
+
+          <script>
+            var codParteSelect = 0;
+            function obterQuantProcessoParte(codParte) {
+              codParteSelect = codParte;
+              ParteService.obterQuantidadeProcessoParte(
+                codParte,
+                exibeQuantProcessoParte
+              );
+              document.getElementById("div" + codParte).innerHTML =
+                '<font color="#AA1C1C">Carregando ...</font>';
+            }
+            function exibeQuantProcessoParte(valor) {
+              div = document.getElementById("div" + codParteSelect);
+              div.innerHTML =
+                '<a href="/projudi/buscas/ProcessosParte?fm=post&codParte=' +
+                codParteSelect +
+                '&nome="""">(' +
+                valor +
+                " Processo(s) Distribuído(s))</a>";
+            }
+
+            function mostraOculta(
+              idParteProcesso,
+              idTabela,
+              linhaCount,
+              tipoInfo
+            ) {
+              var titulo;
+              var conteudoHTML;
+              span = document.getElementById(
+                "span" + tipoInfo + idParteProcesso
+              );
+              trEndAdv = document.getElementById(
+                "tr" + tipoInfo + idParteProcesso
+              );
+              tr = document.getElementById("tr" + idParteProcesso);
+              td = document.getElementById("td" + idParteProcesso);
+              td1 = document.getElementById("td1" + idParteProcesso);
+              tabela = document.getElementById(idTabela);
+
+              if (trEndAdv == null) {
+                novotr = tabela.insertRow(tr.rowIndex + 1);
+                novotr.id = "tr" + tipoInfo + idParteProcesso;
+                if (linhaCount % 2 == 0) {
+                  novotr.className = "linhaEscura";
+                } else {
+                  novotr.className = "linhaClara";
+                }
+                novotd = novotr.insertCell(0);
+                novotd.innerHTML = span.innerHTML;
+
+                novotd.colSpan = 4;
+                td.rowSpan = td.rowSpan + 1;
+                td1.rowSpan = td1.rowSpan + 1;
+              } else {
+                td.rowSpan = td.rowSpan - 1;
+                td1.rowSpan = td1.rowSpan - 1;
+
+                tabela.deleteRow(trEndAdv.rowIndex);
+              }
+            }
+
+            function excluirParte(radioExcluirNome, tableExcluirNome) {
+              radioExcluirParte = document.getElementById(radioExcluirNome);
+              tableExcluirParte = document.getElementById(tableExcluirNome);
+
+              var itens = tableExcluirParte.getElementsByTagName("input");
+              var checked = false;
+
+              for (i = 0; i < itens.length; i++) {
+                if (itens[i].type == "radio") {
+                  checked = itens[i].checked;
+                  if (itens[i].checked) break;
+                }
+              }
+
+              if (checked) {
+                if (
+                  confirm(
+                    "Tem certeza que deseja excluir do processo a parte selecionada?"
+                  )
+                )
+                  doPost(radioExcluirParte.name, null, 0);
+              } else {
+                alert("Selecione uma Parte para excluir.");
+              }
+            }
+          </script>
+
+          <table style="width: 100%" class="tabelaLista" id="tabelaPartes3">
+            <tbody>
+              <tr>
+                <th></th>
+
+                <th>Nome</th>
+                <th style="width: 120px">Identidade</th>
+                <th style="width: 120px">CPF</th>
+                <th style="width: 120px">Advogados</th>
+                <th style="width: 120px">Endereço</th>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Informações (paineis) ocultas que serão exibidas dinamicamente através de javascript -->
+          <!-- Informações de Advogado -->
+        </td>
+      </tr>
+
+      <tr>
+        <td nowrap="" class="tCinza">
+          <div align="center"><strong>Terceiro</strong></div>
+        </td>
+
+        <td colspan="3" class="tCinza">
+          <script src="/projudi/dwr/engine.js"></script>
+          <script src="/projudi/dwr/util.js"></script>
+          <script
+            type="text/javascript"
+            src="/projudi/dwr/interface/ParteService.js"
+          ></script>
+
+          <script>
+            var codParteSelect = 0;
+            function obterQuantProcessoParte(codParte) {
+              codParteSelect = codParte;
+              ParteService.obterQuantidadeProcessoParte(
+                codParte,
+                exibeQuantProcessoParte
+              );
+              document.getElementById("div" + codParte).innerHTML =
+                '<font color="#AA1C1C">Carregando ...</font>';
+            }
+            function exibeQuantProcessoParte(valor) {
+              div = document.getElementById("div" + codParteSelect);
+              div.innerHTML =
+                '<a href="/projudi/buscas/ProcessosParte?fm=post&codParte=' +
+                codParteSelect +
+                '&nome="""">(' +
+                valor +
+                " Processo(s) Distribuído(s))</a>";
+            }
+
+            function mostraOculta(
+              idParteProcesso,
+              idTabela,
+              linhaCount,
+              tipoInfo
+            ) {
+              var titulo;
+              var conteudoHTML;
+              span = document.getElementById(
+                "span" + tipoInfo + idParteProcesso
+              );
+              trEndAdv = document.getElementById(
+                "tr" + tipoInfo + idParteProcesso
+              );
+              tr = document.getElementById("tr" + idParteProcesso);
+              td = document.getElementById("td" + idParteProcesso);
+              td1 = document.getElementById("td1" + idParteProcesso);
+              tabela = document.getElementById(idTabela);
+
+              if (trEndAdv == null) {
+                novotr = tabela.insertRow(tr.rowIndex + 1);
+                novotr.id = "tr" + tipoInfo + idParteProcesso;
+                if (linhaCount % 2 == 0) {
+                  novotr.className = "linhaEscura";
+                } else {
+                  novotr.className = "linhaClara";
+                }
+                novotd = novotr.insertCell(0);
+                novotd.innerHTML = span.innerHTML;
+
+                novotd.colSpan = 4;
+                td.rowSpan = td.rowSpan + 1;
+                td1.rowSpan = td1.rowSpan + 1;
+              } else {
+                td.rowSpan = td.rowSpan - 1;
+                td1.rowSpan = td1.rowSpan - 1;
+
+                tabela.deleteRow(trEndAdv.rowIndex);
+              }
+            }
+
+            function excluirParte(radioExcluirNome, tableExcluirNome) {
+              radioExcluirParte = document.getElementById(radioExcluirNome);
+              tableExcluirParte = document.getElementById(tableExcluirNome);
+
+              var itens = tableExcluirParte.getElementsByTagName("input");
+              var checked = false;
+
+              for (i = 0; i < itens.length; i++) {
+                if (itens[i].type == "radio") {
+                  checked = itens[i].checked;
+                  if (itens[i].checked) break;
+                }
+              }
+
+              if (checked) {
+                if (
+                  confirm(
+                    "Tem certeza que deseja excluir do processo a parte selecionada?"
+                  )
+                )
+                  doPost(radioExcluirParte.name, null, 0);
+              } else {
+                alert("Selecione uma Parte para excluir.");
+              }
+            }
+          </script>
+
+          <table style="width: 100%" class="tabelaLista" id="tabelaPartes2">
+            <tbody>
+              <tr>
+                <th></th>
+
+                <th>Nome</th>
+                <th style="width: 120px">Identidade</th>
+                <th style="width: 120px">CPF</th>
+                <th style="width: 120px">Advogados</th>
+                <th style="width: 120px">Endereço</th>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Informações (paineis) ocultas que serão exibidas dinamicamente através de javascript -->
+          <!-- Informações de Advogado -->
+        </td>
+      </tr>
+
+      <tr>
+        <td align="center" nowrap="" class="tBranca">
+          <div align="left"><strong>Proc. Principal</strong></div>
+        </td>
+        <td class="tBranca">O Próprio</td>
+        <td align="center" class="tBranca">
+          <div align="left"><strong>Proc. Dependentes</strong></div>
+        </td>
+        <td class="tBranca"></td>
+      </tr>
+      <tr class="tCinza">
+        <td align="center" nowrap="" class="tCinza">
+          <div align="left"><strong>Juízo:</strong></div>
+        </td>
+        <td class="tCinza">
+          1ª Vara do Sistema dos Juizados - CAMAÇARI <b>Juiz</b>: MELISSA
+          MAYORAL PEDROSO COELHO LUKINE MARTINS
+          <a href="javascript:chamaPopHist(7020234449380);"
+            >Histórico de Juízes</a
+          >
+        </td>
+        <td align="center" class="tCinza">&nbsp;</td>
+        <td class="tCinza">&nbsp;</td>
+      </tr>
+      <tr class="tCinza">
+        <td align="center" nowrap="" class="tBranca">
+          <div align="left"><strong>Assunto:</strong></div>
+        </td>
+        <td class="tBranca">
+          Indenização por Dano Material « Responsabilidade do Fornecedor «
+          DIREITO DO CONSUMIDOR
+        </td>
+        <td class="tBranca">&nbsp;</td>
+        <td class="tBranca">&nbsp;</td>
+      </tr>
+      <tr class="tBranca">
+        <td height="18" align="center" nowrap="">
+          <div align="left"><strong>Complementares:</strong></div>
+        </td>
+        <td colspan="3" valign="top">
+          <table width="100%" border="0"></table>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td align="center" nowrap="" class="tCinza">
+          <div align="left"><strong>Classe:</strong></div>
+        </td>
+        <td class="tCinza">
+          Procedimento do Juizado Especial Cível « Procedimento de
+          Conhecimento « Processo de Conhecimento « PROCESSO CÍVEL E DO
+          TRABALHO
+        </td>
+      </tr>
+      <tr>
+        <!--
+        <td align="center" nowrap class="tBranca">
+          <div align="left"><strong>Tipo de A&ccedil;&atilde;o</strong></strong>:</div>
+        </td>
+        <td  class="tBranca">Procedimento do Juizado Especial Cível</td>
+          -->
+        <td align="center">
+          <div align="left"><strong>Segredo de Justiça</strong></div>
+        </td>
+        <td>
+          <div><strong>NÃO</strong></div>
+        </td>
+      </tr>
+
+      <tr>
+        <td align="center" nowrap="" class="tCinza">
+          <div align="left"><strong>Proridade Processual:</strong>:</div>
+        </td>
+        <td class="tCinza">IDOSO(A) - 60 A 79 ANOS</td>
+        <td class="tCinza">&nbsp;</td>
+        <td class="tCinza">&nbsp;</td>
+      </tr>
+      <tr class="tBranca">
+        <td align="center" nowrap="" class="tBranca">
+          <div align="left"><strong>Fase Processual</strong>:</div>
+        </td>
+        <td class="tBranca">CONHECIMENTO</td>
+        <td nowrap="" class="tBranca">
+          <div align="left"><strong>Objeto</strong></div>
+        </td>
+        <td class="tBranca">
+          <font color="FF0000"><strong>OBJETO NÃO CADASTRADO</strong></font>
+          <div align="center"></div>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" nowrap="" class="tCinza">
+          <div align="left"><strong>Situação</strong>:</div>
+        </td>
+        <td class="tCinza"></td>
+        <td nowrap="" class="tBranca">
+          <div align="left"><strong>Data de Distribuição</strong></div>
+        </td>
+        <td class="tCinza">
+          22 de Novembro de 2023 às 17:50:02 h
+          <div align="center"></div>
+        </td>
+      </tr>
+
+      <tr>
+        <td align="center" nowrap="" class="tBranca">
+          <div align="left"><strong>Valor da Causa</strong>:</div>
+        </td>
+        <td class="tBranca"><b> R$ 52.721,46</b></td>
+        <td align="center" nowrap="" class="tBranca">
+          <div align="left">&nbsp;</div>
+        </td>
+        <td class="tBranca">&nbsp;</td>
+      </tr>
+      <tr class="tCinza">
+        <td><strong>Cartório Extrajudicial:</strong></td>
+        <td></td>
+        <td align="center" nowrap="">
+          <div align="left"><strong>Prioridade</strong></div>
+        </td>
+        <td>
+          <font color="FF0000"><strong>MAIOR QUE 60 ANOS</strong></font>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" nowrap="" class="tBranca">
+          <div align="left"><strong>Petições P/ Analisar:</strong></div>
+        </td>
+        <td class="tBranca">0 petição(ões)</td>
+        <!--<td class="tBranca"> 0 petição(ões)  </td>-->
+        <td align="center" nowrap="" class="tBranca">
+          <div align="left">
+            <strong>Prazos Para certificar em Vara</strong>
+          </div>
+        </td>
+        <td class="tCinza">
+          <font size="-2"> 0 intimações<br />0 cumprimentos do cartório</font>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script language="javascript">
+  initPartes();
+</script>
+<div class="style9">
+  <p align="center">
+    &nbsp;&nbsp;<a
+      href="/projudi/listagens/NavegarProcesso?numeroProcesso=7020234449380"
+      >Navegar pelo Processo</a
+    >
+
+    &nbsp;&nbsp;<a
+      href="javascript:chamaRelatorioAtosProcesso(7020234449380, 1)"
+      >Atos Tributáveis</a
+    >
+
+    &nbsp;&nbsp;<a href="javascript:chamaDownloadProcesso(7020234449380)">
+      Download do Processo
+    </a>
+
+    &nbsp;&nbsp;<a href="javascript:chamaPopHistAcesso(7020234449380)"
+      >Histórico de Acessos de Terceiros</a
+    >
+
+    &nbsp;&nbsp;<a href="javascript:chamaPopLotacaoAudiencia(7020234449380)"
+      >Endereço da Audiência</a
+    >
+
+    &nbsp;&nbsp;<a href="javascript:chamaResumoProcesso(7020234449380)"
+      >Resumo do Processo</a
+    >
+  </p>
+</div>
+<div id="Arquivos">
+  <table
+    width="98%"
+    border="0"
+    align="center"
+    cellpadding="0"
+    cellspacing="0"
+    bordercolor="#999999"
+  >
+    <tbody>
+      <tr>
+        <td>
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr class="primeiraLinha">
+                <td width="36" nowrap=""><font size="2">Nº</font></td>
+                <td nowrap=""><font size="2">Eventos do Processo</font></td>
+                <td width="100" align="center" nowrap="">
+                  <font size="2">Data</font>
+                </td>
+                <td width="200" align="center" nowrap="">
+                  <font size="2">Movimentado por</font>
+                </td>
+                <td width="95" nowrap="" align="center">
+                  <font size="2">Arquivos/Observação</font>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="tBranca">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">12</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Citação lido(a)</font
+                    ></b
+                  >
+                  <br />
+                  P/ Representante: EMPRESA BAIANA DE AGUAS E SANEAMENTO SA em
+                  24/11/23
+                </td>
+                <td width="100" align="center" nowrap="">24/11/23</td>
+                <td width="200" align="center">
+                  ELISANGELA DE QUEIROZ FERNANDES BRITO
+                </td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%"></td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298841552" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298841552" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              Movimentação sem arquivos
+            </div>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td class="tCinza">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">11</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Citação expedido(a)</font
+                    ></b
+                  >
+                  <br />
+                  Para COLMACARI EMPREENDIMENTOS IMOBILIARIOS LTDA
+                </td>
+                <td width="100" align="center" nowrap="">24/11/23</td>
+                <td width="200" align="center">MAIARA DA SILVA CORDEIRO</td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%">
+                              <a href="javascript: mostra('sub298830288')"
+                                ><img
+                                  src="/projudi/imagens/arquivos.png"
+                                  border="0"
+                                  width="16"
+                                  height="16"
+                                  title="Mostrar ocultar arquvos."
+                                  onmouseover="this.src='/projudi/imagens/arquivos02.png'"
+                                  onmouseout="this.src='/projudi/imagens/arquivos.png'"
+                              /></a>
+                            </td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298830288" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298830288" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td rowspan="1">Arquivos:</td>
+
+                      <td nowrap="">Citação</td>
+                      <td align="center" nowrap="">
+                        Ass.: MAIARA DA SILVA CORDEIRO
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148421768"
+                          >online.html</a
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="tBranca">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">10</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Concedida a Medida Liminar</font
+                    ></b
+                  >
+                  <br />
+                </td>
+                <td width="100" align="center" nowrap="">23/11/23</td>
+                <td width="200" align="center">
+                  MELISSA MAYORAL PEDROSO COELHO LUKINE MARTINS
+                </td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%">
+                              <a href="javascript: mostra('sub298683817')"
+                                ><img
+                                  src="/projudi/imagens/arquivos.png"
+                                  border="0"
+                                  width="16"
+                                  height="16"
+                                  title="Mostrar ocultar arquvos."
+                                  onmouseover="this.src='/projudi/imagens/arquivos02.png'"
+                                  onmouseout="this.src='/projudi/imagens/arquivos.png'"
+                              /></a>
+                            </td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298683817" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298683817" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td rowspan="1">Arquivos:</td>
+
+                      <td nowrap="">Conclusão</td>
+                      <td align="center" nowrap="">
+                        Ass.: MELISSA MAYORAL PEDROSO COELHO LUKINE MARTINS
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148344957"
+                          >online.html</a
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="tCinza">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">9</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Citação expedido(a)</font
+                    ></b
+                  >
+                  <br />
+                  Para EMPRESA BAIANA DE AGUAS E SANEAMENTO SA
+                </td>
+                <td width="100" align="center" nowrap="">22/11/23</td>
+                <td width="200" align="center">SISTEMA CNJ</td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%"></td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298640439" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298640439" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              Movimentação sem arquivos
+            </div>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td class="tBranca">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">8</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Solicitada a Expedição de Citação</font
+                    ></b
+                  >
+                  <br />
+                  Para COLMACARI EMPREENDIMENTOS IMOBILIARIOS LTDA
+                </td>
+                <td width="100" align="center" nowrap="">22/11/23</td>
+                <td width="200" align="center">SISTEMA CNJ</td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%"></td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298640438" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298640438" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              Movimentação sem arquivos
+            </div>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td class="tCinza">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">7</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Intimação lido(a)</font
+                    ></b
+                  >
+                  <br />
+                  (Para MARCIO INACIO MARTINS) em 22/11/23 *Referente ao
+                  evento Audiência de Conciliação Designada (Telepresencial)
+                  (22/11/23)
+                </td>
+                <td width="100" align="center" nowrap="">22/11/23</td>
+                <td width="200" align="center">SISTEMA CNJ</td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%"></td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298640433" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298640433" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              Movimentação sem arquivos
+            </div>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td class="tBranca">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">6</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Intimação lido(a)</font
+                    ></b
+                  >
+                  <br />
+                  (Para JUSSARA MENDONCA LYRA MARTINS) em 22/11/23 *Referente
+                  ao evento Audiência de Conciliação Designada
+                  (Telepresencial) (22/11/23)
+                </td>
+                <td width="100" align="center" nowrap="">22/11/23</td>
+                <td width="200" align="center">SISTEMA CNJ</td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%"></td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298640432" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298640432" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              Movimentação sem arquivos
+            </div>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td class="tCinza">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">5</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Audiência de Conciliação Designada (Telepresencial)
+                    </font></b
+                  >
+                  <br />
+                  (Agendada para 21 de Fevereiro de 2024 às 12:30 h)
+                </td>
+                <td width="100" align="center" nowrap="">22/11/23</td>
+                <td width="200" align="center">SISTEMA CNJ</td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%"></td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298640431" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298640431" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              Movimentação sem arquivos
+            </div>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td class="tBranca">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">4</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Conclusos para Pedido Urgência</font
+                    ></b
+                  >
+                  <br />
+                </td>
+                <td width="100" align="center" nowrap="">22/11/23</td>
+                <td width="200" align="center">SISTEMA CNJ</td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%"></td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298640421" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298640421" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              Movimentação sem arquivos
+            </div>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td class="tCinza">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">3</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Autos incluídos no Juízo 100% Digital</font
+                    ></b
+                  >
+                  <br />
+                  Este processo foi incluído no Juízo 100% Digital nos termos
+                  da
+                  <a
+                    href="http://www5.tjba.jus.br/juizadosespeciais/images/pdf/ATO_NORMATIVO_N_07_2022.pdf"
+                    target="_blank"
+                    >Regulamentação vigente</a
+                  >
+                </td>
+                <td width="100" align="center" nowrap="">22/11/23</td>
+                <td width="200" align="center">SISTEMA CNJ</td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%"></td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298640418" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298640418" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              Movimentação sem arquivos
+            </div>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td class="tBranca">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">2</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Distribuído por Sorteio</font
+                    ></b
+                  >
+                  <br />
+                  1ª Vara do Sistema dos Juizados - CAMAÇARI
+                </td>
+                <td width="100" align="center" nowrap="">22/11/23</td>
+                <td width="200" align="center">SISTEMA CNJ</td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%"></td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298640417" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298640417" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              Movimentação sem arquivos
+            </div>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td class="tCinza">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td height="40" width="33">1</td>
+                <td>
+                  <b
+                    ><!--ATENCAOTJBA--><font size="2" color="#800517"
+                      >Recebido pelo Distribuidor</font
+                    ></b
+                  >
+                  <br />
+                  Origem: OAB65457NBA
+                </td>
+                <td width="100" align="center" nowrap="">22/11/23</td>
+                <td width="200" align="center">SILANETE ALENCAR SOUSA</td>
+                <td width="98" nowrap="">
+                  <div style="cursor: pointer">
+                    <div align="center">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td width="50%">
+                              <a href="javascript: mostra('sub298640413')"
+                                ><img
+                                  src="/projudi/imagens/arquivos.png"
+                                  border="0"
+                                  width="16"
+                                  height="16"
+                                  title="Mostrar ocultar arquvos."
+                                  onmouseover="this.src='/projudi/imagens/arquivos02.png'"
+                                  onmouseout="this.src='/projudi/imagens/arquivos.png'"
+                              /></a>
+                            </td>
+                            <td width="50%"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span id="obs298640413" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+
+          <span id="sub298640413" style="display: none">
+            <div style="border-top: 2px solid rgb(102, 102, 102)">
+              <div
+                style="
+                  border-top: 2px solid rgb(255, 255, 255);
+                  border-left: 2px solid rgb(255, 255, 255);
+                  border-right: 2px solid rgb(255, 255, 255);
+                  border-bottom: 2px solid rgb(255, 255, 255);
+                "
+              >
+                <table
+                  align="center"
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td rowspan="25">Arquivos:</td>
+
+                      <td nowrap="">Petição Inicial</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325104"
+                          >PETIÃ¿Ã¿O INICIAL.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">Procuração</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325105"
+                          >procuraÃ§oes.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">Comprovante Residência</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325106"
+                          >Comprovante de residÃªncia.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">documento de identificaÃ§Ã£o</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325107"
+                          >documento de identificaÃ§Ã£o.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">
+                        Contrato de compra e venda - Loteamento Luar de
+                        CamaÃ§ari
+                      </td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325108"
+                          >Contrato de compra e venda - Loteamento Luar de
+                          CamaÃ§ari.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">Embasa - autorizaÃ§Ã£o de ligaÃ§Ã£o</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325109"
+                          >Embasa - autorizaÃ§Ã£o de ligaÃ§Ã£o.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">comunicado colmaÃ§ari</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325110"
+                          >comunicado colmaÃ§ari.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">Comunicados da ColmaÃ§ari</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325111"
+                          >Comunicados da ColmaÃ§ari.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">extratos de pagamento - colorado</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325112"
+                          >extratos de pagamento - colorado.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">Faturas de Ã¡gua</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325113"
+                          >Faturas de Ã¡gua .pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">propaganda enganosa</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325114"
+                          >propaganda enganosa.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">Prova - CondiÃ§Ã£o da Ã¡gua</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325115"
+                          >Prova - CondiÃ§Ã£o da Ã¡gua.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">
+                        Prova - Imagens do caminhÃ£o RGA - Embasa
+                      </td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325116"
+                          >Prova - Imagens do caminhÃ£o RGA - Embasa.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">provas - imagens</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325117"
+                          >provas - imagens.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">RECAMAÃ¿OES - RECLAME AQUI</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325118"
+                          >RECAMAÃ¿OES - RECLAME AQUI.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">ReclamaÃ§Ã£o administrativa - Procon</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325119"
+                          >ReclamaÃ§Ã£o administrativa - Procon.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">
+                        Resposta da embasa a reclamÃ§Ãµes administrativas
+                      </td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325120"
+                          >Resposta da embasa a reclamÃ§Ãµes
+                          administrativas.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">
+                        Termos de autorizaÃ§Ã£o para construÃ§Ã£o - Colorado
+                      </td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325121"
+                          >Termos de autorizaÃ§Ã£o para construÃ§Ã£o -
+                          Colorado.pdf</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">Prova - VÃ­deo do caminhÃ£o</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325122"
+                          >Prova - VÃ­deo do caminhÃ£o.mp4</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">
+                        Prova - VÃ­deo explicando a situaÃ§Ã£o
+                      </td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325123"
+                          >Prova - VÃ­deo explicando a situaÃ§Ã£o.mp4</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">video - prova 1</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325124"
+                          >video - prova 1.mp4</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">video - prova 2</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325125"
+                          >video - prova 2.mp4</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">video - prova 3</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325126"
+                          >video - prova 3.mp4</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">video - prova 4</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325127"
+                          >video - prova 4.mp4</a
+                        >
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td nowrap="">video - prova 5</td>
+                      <td align="center" nowrap="">
+                        Ass.: SILANETE ALENCAR SOUSA
+                      </td>
+                      <td nowrap="">
+                        <a
+                          href="/projudi/listagens/DownloadArquivo?arquivo=148325129"
+                          >video - prova 5.mp4</a
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script language="javascript">
+  var ar = document.getElementById("Arquivos").getElementsByTagName("span");
+  for (var i = 0; i < ar.length; i++) {
+    ar[i].style.display = "none";
+  }
+</script>
+<br />
+<div align="center">
+  <img
+    src="/projudi/imagens/botoes/bot-Imprimir.gif"
+    onclick="javascript:DoPrinting()"
+  />
+</div>
+
+<div id="popupMask"></div>
+<div id="popupContainer">
+  <div id="popupInner">
+    <div id="popupTitleBar">
+      <div id="popupTitle"></div>
+      <div id="popupControls">
+        <img
+          src="/projudi/scripts/subModal/close.gif"
+          onclick="hidePopWin(false);"
+          id="popCloseBox"
+        />
+      </div>
+    </div>
+    <iframe
+      src="/projudi/scripts/subModal/carregando.html"
+      style="width: 100%; height: 100%; background-color: transparent"
+      scrolling="auto"
+      frameborder="0"
+      allowtransparency="true"
+      id="popupFrame"
+      name="popupFrame"
+      width="100%"
+      height="100%"
+    ></iframe>
+  </div>
+</div>
+<div id="popupMask"></div>
+<div id="popupContainer">
+  <div id="popupInner">
+    <div id="popupTitleBar">
+      <div id="popupTitle"></div>
+      <div id="popupControls">
+        <img
+          src="/projudi/scripts/subModal/close.gif"
+          onclick="hidePopWin(false);"
+          id="popCloseBox"
+        />
+      </div>
+    </div>
+    <iframe
+      src="/projudi/scripts/subModal/carregando.html"
+      style="width: 100%; height: 100%; background-color: transparent"
+      scrolling="auto"
+      frameborder="0"
+      allowtransparency="true"
+      id="popupFrame"
+      name="popupFrame"
+      width="100%"
+      height="100%"
+    ></iframe>
+  </div>
+</div>
+<div id="popupMask"></div>
+<div id="popupContainer">
+  <div id="popupInner">
+    <div id="popupTitleBar">
+      <div id="popupTitle"></div>
+      <div id="popupControls">
+        <img
+          src="/projudi/scripts/subModal/close.gif"
+          onclick="hidePopWin(false);"
+          id="popCloseBox"
+        />
+      </div>
+    </div>
+    <iframe
+      src="/projudi/scripts/subModal/carregando.html"
+      style="width: 100%; height: 100%; background-color: transparent"
+      scrolling="auto"
+      frameborder="0"
+      allowtransparency="true"
+      id="popupFrame"
+      name="popupFrame"
+      width="100%"
+      height="100%"
+    ></iframe>
+  </div>
+</div>
+<div id="popupMask"></div>
+<div id="popupContainer">
+  <div id="popupInner">
+    <div id="popupTitleBar">
+      <div id="popupTitle"></div>
+      <div id="popupControls">
+        <img
+          src="/projudi/scripts/subModal/close.gif"
+          onclick="hidePopWin(false);"
+          id="popCloseBox"
+        />
+      </div>
+    </div>
+    <iframe
+      src="/projudi/scripts/subModal/carregando.html"
+      style="width: 100%; height: 100%; background-color: transparent"
+      scrolling="auto"
+      frameborder="0"
+      allowtransparency="true"
+      id="popupFrame"
+      name="popupFrame"
+      width="100%"
+      height="100%"
+    ></iframe>
+  </div>
+</div>
+<div id="popupMask"></div>
+<div id="popupContainer">
+  <div id="popupInner">
+    <div id="popupTitleBar">
+      <div id="popupTitle"></div>
+      <div id="popupControls">
+        <img
+          src="/projudi/scripts/subModal/close.gif"
+          onclick="hidePopWin(false);"
+          id="popCloseBox"
+        />
+      </div>
+    </div>
+    <iframe
+      src="/projudi/scripts/subModal/carregando.html"
+      style="width: 100%; height: 100%; background-color: transparent"
+      scrolling="auto"
+      frameborder="0"
+      allowtransparency="true"
+      id="popupFrame"
+      name="popupFrame"
+      width="100%"
+      height="100%"
+    ></iframe>
+  </div>
+</div>
