@@ -1,6 +1,6 @@
 {
   "name": "brazilian-courts-scrappers",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Data scrapper para fazer raspagem de dados de processos judiciais dos portais de tribunais do Brasil.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -28,7 +28,7 @@
     "advogados"
   ],
   "author": "César Rodríguez",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/ironsand-sou-eu/brazilian-courts-scrappers/issues"
   },
