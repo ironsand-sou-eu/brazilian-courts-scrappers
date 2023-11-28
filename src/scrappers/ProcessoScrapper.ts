@@ -16,6 +16,10 @@ export default class ProcessoScrapper {
     }
   }
 
+  public get url(): URL {
+    return new URL(this.doc.URL);
+  }
+
   public checkProcessoHomepage(
     url: string,
     ignorePages: string[],

@@ -1,6 +1,6 @@
 {
   "name": "brazilian-courts-scrappers",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Data scrapper para fazer raspagem de dados de processos judiciais dos portais de tribunais do Brasil.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
