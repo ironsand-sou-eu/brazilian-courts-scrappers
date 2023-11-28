@@ -46,11 +46,9 @@ export default class ProjudiTjbaPartesScrapper extends PartesScrapper {
     this.testemunhasWrapperTd = this.macroContainer.querySelector(
       querySelectors.testemunhas
     );
-    // console.log("here testemunhas", this.testemunhasWrapperTd.textContent);
     this.terceirosWrapperTd = this.macroContainer.querySelector(
       querySelectors.terceiros
     );
-    // console.log("here terceiros", this.terceirosWrapperTd.textContent);
   }
 
   protected getPartes(): PartesReturn {
@@ -130,12 +128,15 @@ export default class ProjudiTjbaPartesScrapper extends PartesScrapper {
     poloWrapperTd: HTMLElement,
     parteJudSystemId: string
   ): ContactInfo {
-    const contactsSpanSelector = `span[id^="spanEnd${parteJudSystemId}"]`;
-    const contactsSpan = poloWrapperTd.querySelector(
-      contactsSpanSelector
-    ) as HTMLElement;
-    const contactInfo = contactsSpan
-      .textContent!.replaceAll(String.fromCharCode(10), "")
+    const contactsTbodySelector = `table.tabelaLista ~ span[id^="spanEnd${parteJudSystemId}"] table > tbody`;
+    const contactsTbody: HTMLElement = poloWrapperTd.querySelector(
+      contactsTbodySelector
+    );
+    let contactInfo = contactsTbody.querySelector(
+      "tr:nth-child(2) > td"
+    ).textContent;
+    contactInfo = contactInfo
+      .replaceAll(String.fromCharCode(10), "")
       .replaceAll(/\s+/g, " ")
       .trim();
     return this.parseContactInfo(contactInfo);
@@ -172,7 +173,7 @@ export default class ProjudiTjbaPartesScrapper extends PartesScrapper {
     parteJudSystemId: string
   ): ScrappedParte[] {
     const advogadosTbody = partesWrapperTd.querySelector(
-      `span[id^="spanAdv${parteJudSystemId}"] table[id^="tabelaAdvogadoPartes"] > tbody`
+      `table.tabelaLista ~ span[id^="spanAdv${parteJudSystemId}"] table[id^="tabelaAdvogadoPartes"] > tbody`
     )!;
     const advogadosTrs = advogadosTbody.querySelectorAll(
       'tr[class]:not([class="ultimaLinha"])'

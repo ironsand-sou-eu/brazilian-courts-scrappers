@@ -3,7 +3,6 @@ import ScrappedProcesso, {
 } from "../data-structures/ScrappedProcesso";
 import ScrappedAndamento from "../data-structures/ScrappedAndamento";
 import ScrappedUnidadeJurisdicional from "../data-structures/ScrappedUnidadeJurisdicional";
-import NotProcessoHomepageException from "../exceptions/NotProcessoHomepageException";
 import ProcessoScrapper from "./ProcessoScrapper";
 import Pje1gTjbaAndamentosScrapper from "./Pje1gTjbaAndamentosScrapper";
 import Pje1gTjbaParteScrapper from "./Pje1gTjbaPartesScrapper";
@@ -31,21 +30,12 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
     return super.fetchProcessoInfo();
   }
 
-  public checkProcessoHomepage(url: string): boolean {
-    if (
-      Pje1gTjbaProcessoScrapper.IGNORE_URLS_CONTAINING.some(itemToIgnore =>
-        url.includes(itemToIgnore)
-      )
-    ) {
-      return false;
-    } else if (
-      !url ||
-      !url.includes(Pje1gTjbaProcessoScrapper.PROCESSO_HOME_PATH_PART)
-    ) {
-      throw new NotProcessoHomepageException(new URL(url));
-    } else {
-      return true;
-    }
+  public checkProcessoHomepage(): boolean {
+    return super.checkProcessoHomepage(
+      this.doc.URL,
+      Pje1gTjbaProcessoScrapper.IGNORE_URLS_CONTAINING,
+      Pje1gTjbaProcessoScrapper.PROCESSO_HOME_PATH_PART
+    );
   }
 
   protected loadPageCheckpoints(): void {

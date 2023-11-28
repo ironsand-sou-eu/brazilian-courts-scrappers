@@ -1,6 +1,8 @@
+import ProcessoScrapper from "./scrappers/ProcessoScrapper";
 import ProjudiTjbaProcessoScrapper from "./scrappers/ProjudiTjbaProcessoScrapper";
 import Pje1gTjbaProcessoScrapper from "./scrappers/Pje1gTjbaProcessoScrapper";
 import Pje1gTrt5ProcessoScrapper from "./scrappers/Pje1gTrt5ProcessoScrapper";
+import NotProcessoHomepageException from "./exceptions/NotProcessoHomepageException";
 
 const DOMAINS = [
   {
@@ -20,13 +22,16 @@ const DOMAINS = [
   },
 ];
 
-export default function identifyCorrectScrapper(doc: Document) {
+function identifyCorrectScrapper(doc: Document): typeof ProcessoScrapper {
   const found = DOMAINS.filter(
     domainObj => domainObj.hostname === new URL(doc.URL).hostname
   );
   if (found.length === 0) return null;
   return found[0].scrapper;
 }
+
+export default { identifyCorrectScrapper, NotProcessoHomepageException };
+export { identifyCorrectScrapper, NotProcessoHomepageException };
 
 // export function pjeLoadFullTimeline(
 //   conditionsCb: CallableFunction | boolean = true

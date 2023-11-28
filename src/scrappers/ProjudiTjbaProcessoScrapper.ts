@@ -3,7 +3,6 @@ import ScrappedProcesso, {
 } from "../data-structures/ScrappedProcesso";
 import ScrappedAndamento from "../data-structures/ScrappedAndamento";
 import ScrappedUnidadeJurisdicional from "../data-structures/ScrappedUnidadeJurisdicional";
-import NotProcessoHomepageException from "../exceptions/NotProcessoHomepageException";
 import ProcessoScrapper from "./ProcessoScrapper";
 import ProjudiTjbaAndamentosScrapper from "./ProjudiTjbaAndamentosScrapper";
 import ProjudiTjbaPartesScrapper from "./ProjudiTjbaPartesScrapper";
@@ -22,7 +21,6 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     "https://projudi.tjba.jus.br/projudi/scripts/subModal/carregando.html",
     "https://projudi.tjba.jus.br/projudi/Cabecalho.jsp",
     "https://projudi.tjba.jus.br/projudi/advogado/CentroAdvogado",
-    "https://projudi.tjba.jus.br/projudi/",
   ];
   protected static PROJUDI_EXTENDED_DATE_REGEX =
     /\d{1,2} de [a-zç]+ de (\d{2}|\d{4}) às \d{1,2}:\d{1,2}/gi;
@@ -37,21 +35,13 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     return super.fetchProcessoInfo();
   }
 
-  public checkProcessoHomepage(url: string): boolean {
-    if (
-      ProjudiTjbaProcessoScrapper.IGNORE_URLS_CONTAINING.some(itemToIgnore =>
-        url.includes(itemToIgnore)
-      )
-    ) {
-      return false;
-    } else if (
-      !url ||
-      !url.includes(ProjudiTjbaProcessoScrapper.PROCESSO_HOME_PATH_PART)
-    ) {
-      throw new NotProcessoHomepageException(new URL(url));
-    } else {
-      return true;
-    }
+  public checkProcessoHomepage(): boolean {
+    const result = super.checkProcessoHomepage(
+      this.doc.URL,
+      ProjudiTjbaProcessoScrapper.IGNORE_URLS_CONTAINING,
+      ProjudiTjbaProcessoScrapper.PROCESSO_HOME_PATH_PART
+    );
+    return result;
   }
 
   protected loadPageCheckpoints(): void {

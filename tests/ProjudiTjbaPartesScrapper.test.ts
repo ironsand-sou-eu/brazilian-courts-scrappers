@@ -1,10 +1,13 @@
 import ScrappedParte from "../src/data-structures/ScrappedParte";
 import TestProjudiTjbaPartesScrapper from "./TestProjudiTjbaPartesScrapper";
-import { createHtmlDocument, getTestDocument } from "./test-utils";
+import { getTestDocument } from "./test-utils";
 import path from "path";
 
 describe("ProjudiTjbaPartesScrapper", () => {
-  const filename = path.resolve("tests", "projudi-mock-page-innerhtml.txt");
+  const filename = path.resolve(
+    "tests/mock-pages",
+    "projudi-mock-page-innerhtml.txt"
+  );
   const doc = getTestDocument(filename);
   const testScrapper = new TestProjudiTjbaPartesScrapper(doc);
 
@@ -19,18 +22,18 @@ describe("ProjudiTjbaPartesScrapper", () => {
     expect(testScrapper.testemunhasWrapperTd).toMatchSnapshot();
   });
 
-  it.only("should return a PartesReturn object with respective info", () => {
+  it("should return a PartesReturn object with respective info", () => {
     const partesReturn = testScrapper.getPartes();
     expect(partesReturn).toHaveProperty("poloAtivo");
     expect(partesReturn).toHaveProperty("poloPassivo");
     expect(partesReturn).toHaveProperty("outros");
-    expect(partesReturn.poloAtivo.length).toBeGreaterThan(0);
-    expect(partesReturn.poloPassivo.length).toBeGreaterThan(0);
-    partesReturn.poloAtivo.forEach(parteInfo => {
+    expect(partesReturn.poloAtivo?.length).toBeGreaterThan(0);
+    expect(partesReturn.poloPassivo?.length).toBeGreaterThan(0);
+    partesReturn.poloAtivo?.forEach(parteInfo => {
       expect(parteInfo).toBeInstanceOf(ScrappedParte);
       expect(parteInfo.nome).toBeTruthy();
     });
-    partesReturn.poloPassivo.forEach(parteInfo => {
+    partesReturn.poloPassivo?.forEach(parteInfo => {
       expect(parteInfo).toBeInstanceOf(ScrappedParte);
       expect(parteInfo.nome).toBeTruthy();
     });
@@ -51,9 +54,9 @@ describe("ProjudiTjbaPartesScrapper", () => {
   });
 
   it("should return the parte from the provided row container", () => {
-    const tr: HTMLElement = doc.querySelector(
+    const tr = doc.querySelector(
       "table.tabelaLista tbody > tr[id]:not([id^=trAdv])"
-    );
+    ) as HTMLElement;
     const parteInfo = testScrapper.getParte(
       testScrapper.poloAtivoWrapperTd,
       tr,
@@ -65,7 +68,7 @@ describe("ProjudiTjbaPartesScrapper", () => {
   });
 
   it("should adapt information from a CPF/CNPJ Projudi string to the specified type", () => {
-    const testStr = "\n    053.995.967-76\n    ";
+    const testStr = "    053.995.967-76\n    ";
     const cpfCnpjInfo = testScrapper.getCpfCnpjFromString(testStr);
     expect(cpfCnpjInfo.dontHaveCpfCnpj).toBe(false);
     expect(cpfCnpjInfo.noCpfCnpjReason).toBe("");
