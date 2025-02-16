@@ -61,7 +61,7 @@ export default class Pje1gTrt5ProcessoScrapper extends ProcessoScrapper {
     this.doc.querySelector<HTMLElement>("a:has(~ pje-autuacao)").click();
   }
 
-  protected async ScrappeProcessoInfo(): Promise<ScrappedProcesso> {
+  protected async scrappeProcessoInfo(): Promise<ScrappedProcesso> {
     const andamentos = await this.getAndamentos();
     const { poloAtivo, poloPassivo, outros } = this.getPartes();
     return new ScrappedProcesso(

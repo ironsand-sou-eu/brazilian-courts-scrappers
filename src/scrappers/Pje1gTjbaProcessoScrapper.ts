@@ -42,7 +42,7 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
     this.divMaisDetalhes = this.doc.querySelector("#maisDetalhes");
   }
 
-  protected async ScrappeProcessoInfo(): Promise<ScrappedProcesso> {
+  protected async scrappeProcessoInfo(): Promise<ScrappedProcesso> {
     const andamentos = await this.getAndamentos();
     const { poloAtivo, poloPassivo, outros } = this.getPartes();
     return new ScrappedProcesso(
@@ -94,10 +94,10 @@ export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
       partialTextToSearch: "autuação",
     };
     const dateString = getValueFollowingCellSearchedByTextContent(params);
-    return this.getDateFromPjeTjbaDateString(dateString);
+    return Pje1gTjbaProcessoScrapper.getDateFromPjeTjbaDateString(dateString);
   }
 
-  public getDateFromPjeTjbaDateString(
+  public static getDateFromPjeTjbaDateString(
     dateStr: string,
     timeStr = "00:00"
   ): Date {
