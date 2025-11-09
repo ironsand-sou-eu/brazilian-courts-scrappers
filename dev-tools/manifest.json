@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json.schemastore.org/chrome-manifest",
+
+  "manifest_version": 3,
+
+  "name": "Brazilian court screppers Testing tool",
+  "description": "This extension allows easy manual testing of Brazilian Court Scrappers. It'ss composed by the files inside 'dev' folder",
+  "author": "César Rodriguez",
+  "version": "1.0.0",
+
+  "action": {
+    "default_title": "BR Court Scrappers Testing"
+  },
+
+  "background": {
+    "service_worker": "worker.js"
+  },
+
+  "host_permissions": ["*://projudi.tjba.jus.br/*", "*://pje.tjba.jus.br/*"],
+
+  "web_accessible_resources": [
+    {
+      "matches": ["*://projudi.tjba.jus.br/*", "*://pje.tjba.jus.br/*"],
+      "resources": ["content.js", "/build/*"]
+    }
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["https://projudi.tjba.jus.br/*", "https://pje.tjba.jus.br/*"],
+      "all_frames": true,
+      "run_at": "document_end",
+      "js": ["content.js"]
+    }
+  ]
+}
