@@ -1,16 +1,16 @@
 import ScrappedProcesso, {
   SimpleType,
-} from "../data-structures/ScrappedProcesso";
-import ScrappedAndamento from "../data-structures/ScrappedAndamento";
-import ScrappedUnidadeJurisdicional from "../data-structures/ScrappedUnidadeJurisdicional";
-import ProcessoScrapper from "./ProcessoScrapper";
-import Pje1gTjbaAndamentosScrapper from "./Pje1gTjbaAndamentosScrapper";
-import Pje1gTjbaParteScrapper from "./Pje1gTjbaPartesScrapper";
-import { PartesReturn } from "./PartesScrapper";
+} from "../data-structures/ScrappedProcesso.js";
+import ScrappedAndamento from "../data-structures/ScrappedAndamento.js";
+import ScrappedUnidadeJurisdicional from "../data-structures/ScrappedUnidadeJurisdicional.js";
+import ProcessoScrapper from "./ProcessoScrapper.js";
+import Pje1gTjbaAndamentosScrapper from "./Pje1gTjbaAndamentosScrapper.js";
+import Pje1gTjbaParteScrapper from "./Pje1gTjbaPartesScrapper.js";
+import { PartesReturn } from "./PartesScrapper.js";
 import {
   REGEX_CNJ_NUMBER,
   getValueFollowingCellSearchedByTextContent,
-} from "../utils";
+} from "../utils.js";
 
 export default class Pje1gTjbaProcessoScrapper extends ProcessoScrapper {
   protected static PROCESSO_HOME_PATH_PART =

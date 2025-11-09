@@ -1,4 +1,4 @@
-import ScrappedAndamento from "../data-structures/ScrappedAndamento";
+import ScrappedAndamento from "../data-structures/ScrappedAndamento.js";
 
 export default class AndamentosScrapper {
   constructor(protected doc: Document) {}

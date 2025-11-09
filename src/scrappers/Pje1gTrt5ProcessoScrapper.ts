@@ -1,16 +1,16 @@
 import ScrappedProcesso, {
   SimpleType,
-} from "../data-structures/ScrappedProcesso";
-import ScrappedAndamento from "../data-structures/ScrappedAndamento";
-import ScrappedUnidadeJurisdicional from "../data-structures/ScrappedUnidadeJurisdicional";
-import ProcessoScrapper from "./ProcessoScrapper";
-import Pje1gTrt5AndamentosScrapper from "./Pje1gTrt5AndamentosScrapper";
-import Pje1gTrt5PartesScrapper from "./Pje1gTrt5PartesScrapper";
+} from "../data-structures/ScrappedProcesso.js";
+import ScrappedAndamento from "../data-structures/ScrappedAndamento.js";
+import ScrappedUnidadeJurisdicional from "../data-structures/ScrappedUnidadeJurisdicional.js";
+import ProcessoScrapper from "./ProcessoScrapper.js";
+import Pje1gTrt5AndamentosScrapper from "./Pje1gTrt5AndamentosScrapper.js";
+import Pje1gTrt5PartesScrapper from "./Pje1gTrt5PartesScrapper.js";
 import {
   getValueFollowingCellSearchedByTextContent,
   waitForElement,
-} from "../utils";
-import { PartesReturn } from "./PartesScrapper";
+} from "../utils.js";
+import { PartesReturn } from "./PartesScrapper.js";
 
 export default class Pje1gTrt5ProcessoScrapper extends ProcessoScrapper {
   protected static PROCESSO_HOME_PATH_PART = "/pjekz/processo/";

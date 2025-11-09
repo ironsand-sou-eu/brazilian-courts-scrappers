@@ -1,5 +1,5 @@
-import ScrappedProcesso from "../data-structures/ScrappedProcesso";
-import NotProcessoHomepageException from "../exceptions/NotProcessoHomepageException";
+import ScrappedProcesso from "../data-structures/ScrappedProcesso.js";
+import NotProcessoHomepageException from "../exceptions/NotProcessoHomepageException.js";
 
 type Interface<T> = { [P in keyof T]: T[P] };
 export interface IProcessoScrapper extends Interface<ProcessoScrapper> {}
@@ -20,11 +20,7 @@ export default class ProcessoScrapper {
     return new URL(this.doc.URL);
   }
 
-  public checkProcessoHomepage(
-    url: string,
-    ignorePages: string[],
-    homeHostnamePath: string
-  ): boolean {
+  public checkProcessoHomepage(url: string, ignorePages: string[], homeHostnamePath: string): boolean {
     if (ignorePages.some(itemToIgnore => url.includes(itemToIgnore))) {
       return false;
     } else if (!url || !url.includes(homeHostnamePath)) {

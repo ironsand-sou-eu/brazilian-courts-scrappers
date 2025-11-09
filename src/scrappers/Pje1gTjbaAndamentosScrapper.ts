@@ -1,11 +1,11 @@
-import ScrappedAndamento from "../data-structures/ScrappedAndamento";
+import ScrappedAndamento from "../data-structures/ScrappedAndamento.js";
 import {
   getTextContent,
   stripBlankLines,
   stripScriptTagsFromHtmlString,
-} from "../utils";
-import AndamentosScrapper from "./AndamentosScrapper";
-import Pje1gTjbaProcessoScrapper from "./Pje1gTjbaProcessoScrapper";
+} from "../utils.js";
+import AndamentosScrapper from "./AndamentosScrapper.js";
+import Pje1gTjbaProcessoScrapper from "./Pje1gTjbaProcessoScrapper.js";
 
 class Pje1gTjbaAndamentosScrapper extends AndamentosScrapper {
   protected divTimeline: HTMLElement | null;

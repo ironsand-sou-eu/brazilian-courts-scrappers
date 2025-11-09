@@ -1,8 +1,8 @@
-import ProcessoScrapper from "./scrappers/ProcessoScrapper";
-import ProjudiTjbaProcessoScrapper from "./scrappers/ProjudiTjbaProcessoScrapper";
-import Pje1gTjbaProcessoScrapper from "./scrappers/Pje1gTjbaProcessoScrapper";
-import Pje1gTrt5ProcessoScrapper from "./scrappers/Pje1gTrt5ProcessoScrapper";
-import NotProcessoHomepageException from "./exceptions/NotProcessoHomepageException";
+import ProcessoScrapper from "./scrappers/ProcessoScrapper.js";
+import ProjudiTjbaProcessoScrapper from "./scrappers/ProjudiTjbaProcessoScrapper.js";
+import Pje1gTjbaProcessoScrapper from "./scrappers/Pje1gTjbaProcessoScrapper.js";
+import Pje1gTrt5ProcessoScrapper from "./scrappers/Pje1gTrt5ProcessoScrapper.js";
+import NotProcessoHomepageException from "./exceptions/NotProcessoHomepageException.js";
 
 const DOMAINS = [
   {
@@ -23,9 +23,7 @@ const DOMAINS = [
 ];
 
 function identifyCorrectScrapper(doc: Document): typeof ProcessoScrapper {
-  const found = DOMAINS.filter(
-    domainObj => domainObj.hostname === new URL(doc.URL).hostname
-  );
+  const found = DOMAINS.filter(domainObj => domainObj.hostname === new URL(doc.URL).hostname);
   if (found.length === 0) return null;
   return found[0].scrapper;
 }

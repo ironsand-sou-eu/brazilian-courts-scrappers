@@ -1,4 +1,4 @@
-import ScrappedParte from "../data-structures/ScrappedParte";
+import ScrappedParte from "../data-structures/ScrappedParte.js";
 
 export type PartesReturn = {
   poloAtivo: ScrappedParte[] | null;

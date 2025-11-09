@@ -1,16 +1,16 @@
 import ScrappedProcesso, {
   SimpleType,
-} from "../data-structures/ScrappedProcesso";
-import ScrappedAndamento from "../data-structures/ScrappedAndamento";
-import ScrappedUnidadeJurisdicional from "../data-structures/ScrappedUnidadeJurisdicional";
-import ProcessoScrapper from "./ProcessoScrapper";
-import ProjudiTjbaAndamentosScrapper from "./ProjudiTjbaAndamentosScrapper";
-import ProjudiTjbaPartesScrapper from "./ProjudiTjbaPartesScrapper";
-import { PartesReturn } from "./PartesScrapper";
+} from "../data-structures/ScrappedProcesso.js";
+import ScrappedAndamento from "../data-structures/ScrappedAndamento.js";
+import ScrappedUnidadeJurisdicional from "../data-structures/ScrappedUnidadeJurisdicional.js";
+import ProcessoScrapper from "./ProcessoScrapper.js";
+import ProjudiTjbaAndamentosScrapper from "./ProjudiTjbaAndamentosScrapper.js";
+import ProjudiTjbaPartesScrapper from "./ProjudiTjbaPartesScrapper.js";
+import { PartesReturn } from "./PartesScrapper.js";
 import {
   getElementFollowingCellSearchedByTextContent,
   getValueFollowingCellSearchedByTextContent,
-} from "../utils";
+} from "../utils.js";
 
 type JuizoInfo = { juizo?: ScrappedUnidadeJurisdicional; nomeJuiz?: string };
 

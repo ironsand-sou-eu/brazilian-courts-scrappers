@@ -1,11 +1,11 @@
-import ScrappedAndamento from "../data-structures/ScrappedAndamento";
+import ScrappedAndamento from "../data-structures/ScrappedAndamento.js";
 import {
   getTextContent,
   stripBlankLines,
   stripScriptTagsFromHtmlString,
   waitForElement,
-} from "../utils";
-import AndamentosScrapper from "./AndamentosScrapper";
+} from "../utils.js";
+import AndamentosScrapper from "./AndamentosScrapper.js";
 
 type AndamentoType = "documento" | "movimentação";
 
