@@ -1,6 +1,6 @@
-import ScrappedParte from "../data-structures/ScrappedParte";
-import PartesScrapper, { PartesReturn } from "./PartesScrapper";
-import { tiposParte } from "../utils";
+import ScrappedParte from "../data-structures/ScrappedParte.js";
+import PartesScrapper, { PartesReturn } from "./PartesScrapper.js";
+import { tiposParte } from "../utils.js";
 
 type ParteCpfCnpjReturn = {
   dontHaveCpfCnpj: boolean;

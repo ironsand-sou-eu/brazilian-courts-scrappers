@@ -1,11 +1,11 @@
-import ScrappedParte from "../data-structures/ScrappedParte";
+import ScrappedParte from "../data-structures/ScrappedParte.js";
 import {
   extendedTrim,
   getTextContent,
   stripScriptTagsFromHtmlString,
   tiposParte,
-} from "../utils";
-import PartesScrapper, { PartesReturn } from "./PartesScrapper";
+} from "../utils.js";
+import PartesScrapper, { PartesReturn } from "./PartesScrapper.js";
 
 export type ContactInfo = { address: string; email: string; phone: string };
 export type CpfCnpjInfo = {

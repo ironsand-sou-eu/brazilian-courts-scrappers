@@ -1,7 +1,7 @@
-import { Sistema } from "../utils";
-import ScrappedAndamento from "./ScrappedAndamento";
-import ScrappedParte from "./ScrappedParte";
-import ScrappedUnidadeJurisdicional from "./ScrappedUnidadeJurisdicional";
+import { Sistema } from "../utils.js";
+import ScrappedAndamento from "./ScrappedAndamento.js";
+import ScrappedParte from "./ScrappedParte.js";
+import ScrappedUnidadeJurisdicional from "./ScrappedUnidadeJurisdicional.js";
 
 export type SimpleType = {
   id?: string | number;

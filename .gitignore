@@ -6,6 +6,9 @@
 # testing
 /coverage
 
+# dev-tools build
+/dev-tools/build/**/*
+
 # production
 /build/
 /dist/

@@ -1,4 +1,4 @@
-import { tiposParte } from "../utils";
+import { tiposParte } from "../utils.js";
 
 export default class ScrappedParte {
   constructor(

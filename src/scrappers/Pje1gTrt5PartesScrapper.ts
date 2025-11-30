@@ -1,6 +1,6 @@
-import ScrappedParte from "../data-structures/ScrappedParte";
-import PartesScrapper, { PartesReturn } from "./PartesScrapper";
-import { EMAIL_REGEX, tiposParte, trtInterfacePolosNames } from "../utils";
+import ScrappedParte from "../data-structures/ScrappedParte.js";
+import PartesScrapper, { PartesReturn } from "./PartesScrapper.js";
+import { EMAIL_REGEX, tiposParte, trtInterfacePolosNames } from "../utils.js";
 
 type Pje1gTrt5WrapperReturn = {
   dontHaveCpfCnpj: boolean;
