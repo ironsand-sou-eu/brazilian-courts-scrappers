@@ -156,10 +156,10 @@ export default class ProjudiTjbaProcessoScrapper extends ProcessoScrapper {
     };
     const projudiValorDaCausaString =
       getValueFollowingCellSearchedByTextContent(params);
-
-    let valorDaCausa =
-      projudiValorDaCausaString ?? "".trim().replace(/(R\$ )|(\.)/g, "");
-    valorDaCausa = valorDaCausa.replace(",", ".");
+      
+      let valorDaCausa =
+      (projudiValorDaCausaString ?? "").trim().replace(/(R\$ )|(\.)/g, "");
+      valorDaCausa = valorDaCausa.replace(",", ".");
     return Number(valorDaCausa);
   }
 
